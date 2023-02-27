@@ -10,7 +10,7 @@ class Tanggapan extends Model
     protected $primaryKey = "id_tanggapan";
     protected $fillable = [
         'pengaduan_id',
-        'nik',
+        'user_id',
         'tanggal_tanggapan',
         'tanggapan'
     ];
