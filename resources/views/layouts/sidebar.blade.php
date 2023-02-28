@@ -26,7 +26,8 @@
             <span class="nav-link-text ms-1">Pengaduan</span>
           </a>
         </li>
-        @if (auth()->user()->role == 'Admin')
+        {{-- @if (auth()->user()->role == 'Admin')
+        @endif --}}
         <li class="nav-item">
           <a class="nav-link " href="{{ route('tanggapan') }}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -35,7 +36,6 @@
             <span class="nav-link-text ms-1">Tanggapan</span>
           </a>
         </li>
-        @endif
         <li class="nav-item">
           <a class="nav-link " href="../pages/virtual-reality.html">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">

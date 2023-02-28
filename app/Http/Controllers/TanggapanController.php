@@ -58,7 +58,7 @@ class TanggapanController extends Controller
      */
     public function show($id)
     {
-        $tanggapan = Tanggapan::where('id_tanggapan', $id)->first();
+        $tanggapan = Tanggapan::where('id', $id)->first();
         return view('tanggapan.show', compact('tanggapan'));
     }
 
@@ -70,7 +70,7 @@ class TanggapanController extends Controller
      */
     public function edit($id)
     {
-        $tanggapan = Tanggapan::where('id_tanggapan', $id)->first();
+        $tanggapan = Tanggapan::where('id', $id)->first();
         return view('tanggapan.edit', compact('tanggapan'));
     }
 
@@ -83,7 +83,7 @@ class TanggapanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Tanggapan::find('id_tanggapan', $id)->update($request->all());
+        Tanggapan::find('id', $id)->update($request->all());
         return view('tanggapan.index');
     }
 
@@ -95,7 +95,7 @@ class TanggapanController extends Controller
      */
     public function destroy($id)
     {
-        Tanggapan::where('id_tanggapan', $id)->delete();
+        Tanggapan::where('id', $id)->delete();
         return redirect('tanggapan');
     }
 }

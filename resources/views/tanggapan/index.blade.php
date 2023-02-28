@@ -78,7 +78,7 @@
                                         <td class="align-middle">
                                             <div class="d-flex py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <form action="tanggapan/destroy/{{ $t->id_tanggapan }}" method="post">
+                                                    <form action="tanggapan/destroy/{{ $t->id }}" method="post">
                                                         @csrf
                                                         @method('delete')
                                                         {{-- <a data-method="delete" type="submit"
