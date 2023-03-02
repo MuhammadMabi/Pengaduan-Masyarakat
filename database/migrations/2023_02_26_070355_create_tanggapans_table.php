@@ -17,7 +17,7 @@ class CreateTanggapansTable extends Migration
             $table->increments('id');
             $table->string('pengaduan_id', 150);
             $table->string('user_id', 20);
-            $table->date('tanggal_tanggapan');
+            $table->dateTime('tanggal_tanggapan');
             $table->text('tanggapan');
             $table->timestamps();
         });

@@ -32,16 +32,17 @@ Route::middleware(['auth'])->group(function () {
 
     // Profile
 
-    Route::get('profile', 'AuthController@profile');
+    Route::get('profile', 'AuthController@profile')->name('profile');
     
     // Pengaduan
 
     Route::prefix('pengaduan')->group(function () {
         Route::get('/', 'PengaduanController@index')->name('pengaduan');
         Route::get('/create', 'PengaduanController@create');
-        Route::get('/show/{id}', 'PengaduanController@show');
+        Route::get('/show/{id}', 'PengaduanController@show')->name('pengaduan.show');
         Route::get('/edit/{id}', 'PengaduanController@edit');
-        Route::post('/store', 'PengaduanController@store');
+        Route::post('/createOrUpdate', 'PengaduanController@createOrUpdate')->name('pengaduan.createOrUpdate');
+        // Route::post('/createOrUpdate', 'PengaduanController@createOrUpdate');
         Route::put('/update/{id}', 'PengaduanController@update');
         Route::delete('/destroy/{id}', 'PengaduanController@destroy');
     });
@@ -54,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/show/{id}', 'TanggapanController@show');
         Route::get('/edit/{id}', 'TanggapanController@edit');
         Route::post('/store', 'TanggapanController@store');
+        Route::post('/createOrUpdate', 'TanggapanController@createOrUpdate')->name('tanggapan.createOrUpdate');
         Route::put('/update/{id}', 'TanggapanController@update');
         Route::delete('/destroy/{id}', 'TanggapanController@destroy');
     });

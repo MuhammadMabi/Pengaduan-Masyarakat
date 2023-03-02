@@ -28,7 +28,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">
                                         Pengaduan ID</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">
-                                        NIK</th>
+                                        Nama Petugas</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">
                                         Tanggal Tanggapan</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">
@@ -57,7 +57,7 @@
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $t->user_id }}</p>
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $t->user->nama }}</p>
                                                 </div>
                                             </div>
                                         </td>

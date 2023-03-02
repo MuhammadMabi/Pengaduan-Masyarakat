@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Pengaduan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class PengaduanController extends Controller
 {
@@ -35,20 +37,79 @@ class PengaduanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function createOrUpdate(Request $request)
+    {
+        $pengaduan = Pengaduan::where('id', $request->id)->first();
+        $foto = $pengaduan->foto;
+
+        if ($pengaduan) {
+
+            $mytime = Carbon::now();
+
+            if (!$request->foto) {
+                $img = $foto;
+            } else {
+
+                // Storage::delete($foto);
+
+                $imgName = $request->foto->getClientOriginalName() . '-' . time() . '.' . $request->foto->extension();
+                $request->foto->move(public_path('image'), $imgName);
+                $img = $imgName;
+            }
+
+            $pengaduan->update([
+                'tanggal_pengaduan' => $mytime,
+                'isi_laporan' => $request->isi_laporan,
+                'foto' => $img,
+                'status' => 'Pending',
+            ]);
+
+            return redirect()->route('pengaduan');
+        } else {
+            $this->validate($request, [
+                'isi_laporan' => 'required',
+                'foto' => 'required',
+            ]);
+
+            dd($request->foto);
+            $imgName = $request->foto->getClientOriginalName() . '-' . time() . '.' . $request->foto->extension();
+
+            $request->foto->move(public_path('image'), $imgName);
+
+            $mytime = Carbon::now();
+
+            Pengaduan::create([
+                'user_id' => auth()->user()->id,
+                'tanggal_pengaduan' => $mytime,
+                'isi_laporan' => $request->isi_laporan,
+                'foto' => $imgName,
+                'status' => 'Pending',
+            ]);
+
+            return redirect('pengaduan');
+        }
+    }
     public function store(Request $request)
     {
+
         $this->validate($request, [
-            'tanggal_pengaduan' => 'required',
             'isi_laporan' => 'required',
             'foto' => 'required',
         ]);
-        
-        $request['user_id'] = auth()->user()->id;
-        $request['status'] = 'Proses';
-        
-        Pengaduan::create($request->all());
 
-        $message = 'Sukses';
+        $imgName = $request->foto->getClientOriginalName() . '-' . time() . '.' . $request->foto->extension();
+
+        $request->foto->move(public_path('image'), $imgName);
+
+        $mytime = Carbon::now();
+
+        Pengaduan::create([
+            'user_id' => auth()->user()->id,
+            'tanggal_pengaduan' => $mytime,
+            'isi_laporan' => $request->isi_laporan,
+            'foto' => $imgName,
+            'status' => 'Pending',
+        ]);
 
         return redirect('pengaduan');
 
@@ -58,7 +119,7 @@ class PengaduanController extends Controller
         // }
 
         // Pengaduan::create($request->all());
-        
+
         // return response()->json('sukses', 201);
     }
 
@@ -71,8 +132,11 @@ class PengaduanController extends Controller
     public function show($id)
     {
         $pengaduan = Pengaduan::where('id', $id)->get();
+        // dd($pengaduan);
+        $mytime = Carbon::now()->format('d/m/Y');
         // return response()->json($pengaduan);
-        return view('pengaduan.show', compact('pengaduan'));
+        // dd($pengaduan);
+        return view('pengaduan.show', compact('pengaduan', 'mytime'));
     }
 
     /**
@@ -83,7 +147,7 @@ class PengaduanController extends Controller
      */
     public function edit($id)
     {
-        $pengaduan = Pengaduan::where('id', $id)->first();
+        $pengaduan = Pengaduan::where('id', $id)->get();
         return view('pengaduan.edit', compact('pengaduan'));
     }
 

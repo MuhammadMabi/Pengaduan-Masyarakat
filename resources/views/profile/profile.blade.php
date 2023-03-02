@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="card shadow-lg mx-4 card-profile-bottom">
+    {{-- <div class="card shadow-lg mx-4">
     <div class="card-body p-3">
         <div class="row gx-4">
             <div class="col-auto">
@@ -48,147 +48,364 @@
             </div>
         </div>
     </div>
-</div>
-<div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header pb-0">
-                    <div class="d-flex align-items-center">
-                        <p class="mb-0">Edit Profile</p>
-                        <button class="btn btn-primary btn-sm ms-auto">Settings</button>
+</div> --}}
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <div class="d-flex align-items-center">
+                            <p class="mb-0">Edit Profile</p>
+                            <button class="btn btn-primary btn-sm ms-auto">Settings</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-uppercase text-sm">User Information</p>
+                        <form method="POST" action="{{ route('register') }}">
+                            @csrf
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Nomor Induk
+                                            Kependudukan</label>
+                                        <input id="nik" type="number"
+                                            class="form-control @error('nik') is-invalid @enderror" name="nik"
+                                            value="{{ auth()->user()->nik }}" required autocomplete="nik" autofocus>
+
+                                        @error('nik')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Nama
+                                            Lengkap</label>
+                                        <input id="nama" type="text"
+                                            class="form-control @error('nama') is-invalid @enderror" name="nama"
+                                            value="{{ auth()->user()->nama }}" required autocomplete="nama" autofocus>
+
+                                        @error('nama')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Email</label>
+                                        <input id="email" type="email"
+                                            class="form-control @error('email') is-invalid @enderror" name="email"
+                                            value="{{ auth()->user()->email }}" required autocomplete="email">
+
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Nomor
+                                            Telepon</label>
+                                        <input id="telp" type="number"
+                                            class="form-control @error('telp') is-invalid @enderror" name="telp"
+                                            value="{{ auth()->user()->telp }}" required autocomplete="telp" autofocus>
+
+                                        @error('telp')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                {{-- <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="example-text-input"
+                                        class="form-control-label">Password</label>
+                                        <input id="password" type="password"
+                                            class="form-control @error('password') is-invalid @enderror" name="password"
+                                            required autocomplete="new-password">
+    
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="example-text-input" class="form-control-label">Confirm
+                                        Password</label>
+                                        <input id="password-confirm" type="password" class="form-control"
+                                            name="password_confirmation" required autocomplete="new-password">
+                                </div>
+                            </div> --}}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Tanggal
+                                            Lahir</label>
+                                        <input id="tanggal_lahir" type="date"
+                                            class="form-control @error('tanggal_lahir') is-invalid @enderror"
+                                            name="tanggal_lahir" value="{{ auth()->user()->tanggal_lahir }}" required
+                                            autocomplete="tanggal_lahir" autofocus>
+
+                                        @error('tanggal_lahir')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Jenis
+                                            Kelamin</label>
+                                        <br>
+                                        {{-- <input class="form-control" type="date"> --}}
+                                        <div class="mt-2">
+                                            @if (auth()->user()->jenis_kelamin == 'Laki-laki')
+                                                <input class="@error('jenis_kelamin') is-invalid @enderror" type="radio"
+                                                    id="Laki-laki" name="jenis_kelamin" value="Laki-laki" checked />
+                                                <label for="Laki-laki">Laki_laki</label>
+                                                <input class="@error('jenis_kelamin') is-invalid @enderror ml-3"
+                                                    type="radio" id="Perempuan" name="jenis_kelamin" value="Perempuan" />
+                                                <label for="Perempuan">Perempuan</label>
+                                            @endif
+
+                                            @if (auth()->user()->jenis_kelamin == 'Perempuan')
+                                                <input class="@error('jenis_kelamin') is-invalid @enderror" type="radio"
+                                                    id="Laki-laki" name="jenis_kelamin" value="Laki-laki" />
+                                                <label for="Laki-laki">Laki_laki</label>
+                                                <input class="@error('jenis_kelamin') is-invalid @enderror ml-3"
+                                                    type="radio" id="Perempuan" name="jenis_kelamin" value="Perempuan"
+                                                    checked />
+                                                <label for="Perempuan">Perempuan</label>
+                                            @endif
+                                        </div>
+                                        @error('jenis_kelamin')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <input id="role" type="text"
+                                    class="form-control @error('role') is-invalid @enderror" name="role"
+                                    value="Warga" required autocomplete="role" autofocus hidden>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Alamat</label>
+                                        <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat" id="alamat" cols="30"
+                                            rows="3">{{ auth()->user()->alamat }}</textarea>
+
+                                        @error('alamat')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">RT</label>
+                                        <input id="rt" type="number"
+                                            class="form-control @error('rt') is-invalid @enderror" name="rt"
+                                            value="{{ auth()->user()->rt }}" required autocomplete="rt" autofocus>
+
+                                        @error('rt')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">RW</label>
+                                        <input id="rw" type="number"
+                                            class="form-control @error('rw') is-invalid @enderror" name="rw"
+                                            value="{{ auth()->user()->rw }}" required autocomplete="rw" autofocus>
+
+                                        @error('rw')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Kode
+                                            Pos</label>
+                                        <input id="kode_pos" type="number"
+                                            class="form-control @error('kode_pos') is-invalid @enderror" name="kode_pos"
+                                            value="{{ auth()->user()->kode_pos }}" required autocomplete="kode_pos"
+                                            autofocus>
+
+                                        @error('kode_pos')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Provinsi</label>
+                                        <select id="provinsi"
+                                            class="form-control @error('province_id') is-invalid @enderror"
+                                            name="province_id">
+                                            {{-- <option value="{{ auth()->user()->province_id }}">{{ $province->name }}</option> --}}
+                                            @foreach ($province as $p)
+                                                @if ($p->id == auth()->user()->province_id)
+                                                    <option value="{{ $p->id }}" selected>{{ $p->name }}
+                                                    </option>
+                                                @endif
+                                                <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('province_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Kabupaten/Kota</label>
+                                        <select id="kabupaten"
+                                            class="form-control @error('regency_id') is-invalid @enderror"
+                                            name="regency_id">
+                                        </select>
+
+                                        @error('regency_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Kecamatan</label>
+                                        <select id="kecamatan"
+                                            class="form-control @error('district_id') is-invalid @enderror"
+                                            name="district_id">
+                                        </select>
+
+                                        @error('district_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Desa</label>
+                                        <select id="desa"
+                                            class="form-control @error('village_id') is-invalid @enderror"
+                                            name="village_id">
+                                        </select>
+
+                                        @error('village_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-0">
+                                <div class="text-center">
+                                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign
+                                        up</button>
+                                    <p class="text-sm mt-3 mb-0">Already have an account? <a href="login"
+                                            class="text-dark font-weight-bolder">Sign in</a></p>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="card-body">
-                    <p class="text-uppercase text-sm">User Information</p>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Username</label>
-                                <input class="form-control" type="text" value="lucky.jesse">
+            </div>
+            <div class="col-md-4">
+                <div class="card card-profile">
+                    {{-- <img src="/img/bg-profile.jpg" alt="Image placeholder" class="card-img-top">
+                    <div class="row justify-content-center">
+                        <div class="col-4 col-lg-4 order-lg-2">
+                            <div class="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
+                                <a href="javascript:;">
+                                    <img src="/img/team-2.jpg"
+                                        class="rounded-circle img-fluid border border-2 border-white">
+                                </a>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Email address</label>
-                                <input class="form-control" type="email" value="jesse@example.com">
+                    </div> --}}
+                    {{-- <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
+                        <div class="d-flex justify-content-between">
+                            <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-none d-lg-block">Connect</a>
+                            <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i
+                                    class="ni ni-collection"></i></a>
+                            <a href="javascript:;"
+                                class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">Message</a>
+                            <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i
+                                    class="ni ni-email-83"></i></a>
+                        </div>
+                    </div> --}}
+                    <div class="card-body pt-0 mt-3">
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-grid text-center">
+                                    <span class="text-lg font-weight-bolder">{{ $laporan }} Laporan</span>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <div class="d-grid text-center">
+                                        <span class="text-lg font-weight-bolder">{{ $pending }}</span>
+                                        <span class="text-sm opacity-8">Pending</span>
+                                    </div>
+                                    <div class="d-grid text-center mx-4">
+                                        <span class="text-lg font-weight-bolder">{{ $proses }}</span>
+                                        <span class="text-sm opacity-8">Proses</span>
+                                    </div>
+                                    {{-- <div class="d-grid text-center mx-4">
+                                        <span class="text-lg font-weight-bolder">{{ $proses }}</span>
+                                        <span class="text-sm opacity-8">Proses</span>
+                                    </div> --}}
+                                    <div class="d-grid text-center">
+                                        <span class="text-lg font-weight-bolder">{{ $selesai }}</span>
+                                        <span class="text-sm opacity-8">Selesai</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">First name</label>
-                                <input class="form-control" type="text" value="Jesse">
+                        <div class="text-center mt-4">
+                            <h5>
+                                {{ auth()->user()->nama }}<span class="font-weight-light"></span>
+                            </h5>
+                            <div class="h6 font-weight-300">
+                                <i class="ni location_pin mr-2"></i>{{ auth()->user()->telp }}, Romania
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Last name</label>
-                                <input class="form-control" type="text" value="Lucky">
+                            <div class="h6 mt-4">
+                                <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
                             </div>
-                        </div>
-                    </div>
-                    <hr class="horizontal dark">
-                    <p class="text-uppercase text-sm">Contact Information</p>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Address</label>
-                                <input class="form-control" type="text"
-                                    value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">City</label>
-                                <input class="form-control" type="text" value="New York">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Country</label>
-                                <input class="form-control" type="text" value="United States">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Postal code</label>
-                                <input class="form-control" type="text" value="437300">
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="horizontal dark">
-                    <p class="text-uppercase text-sm">About me</p>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">About me</label>
-                                <input class="form-control" type="text"
-                                    value="A beautiful Dashboard for Bootstrap 5. It is Free and Open Source.">
+                            <div>
+                                <i class="ni education_hat mr-2"></i>University of Computer Science
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card card-profile">
-                <img src="/img/bg-profile.jpg" alt="Image placeholder" class="card-img-top">
-                <div class="row justify-content-center">
-                    <div class="col-4 col-lg-4 order-lg-2">
-                        <div class="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
-                            <a href="javascript:;">
-                                <img src="/img/team-2.jpg"
-                                    class="rounded-circle img-fluid border border-2 border-white">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
-                    <div class="d-flex justify-content-between">
-                        <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-none d-lg-block">Connect</a>
-                        <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i
-                                class="ni ni-collection"></i></a>
-                        <a href="javascript:;"
-                            class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">Message</a>
-                        <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i
-                                class="ni ni-email-83"></i></a>
-                    </div>
-                </div>
-                <div class="card-body pt-0">
-                    <div class="row">
-                        <div class="col">
-                            <div class="d-flex justify-content-center">
-                                <div class="d-grid text-center">
-                                    <span class="text-lg font-weight-bolder">22</span>
-                                    <span class="text-sm opacity-8">Friends</span>
-                                </div>
-                                <div class="d-grid text-center mx-4">
-                                    <span class="text-lg font-weight-bolder">10</span>
-                                    <span class="text-sm opacity-8">Photos</span>
-                                </div>
-                                <div class="d-grid text-center">
-                                    <span class="text-lg font-weight-bolder">89</span>
-                                    <span class="text-sm opacity-8">Comments</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center mt-4">
-                        <h5>
-                            Mark Davis<span class="font-weight-light">, 35</span>
-                        </h5>
-                        <div class="h6 font-weight-300">
-                            <i class="ni location_pin mr-2"></i>Bucharest, Romania
-                        </div>
-                        <div class="h6 mt-4">
-                            <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
-                        </div>
-                        <div>
-                            <i class="ni education_hat mr-2"></i>University of Computer Science
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection
+    @endsection

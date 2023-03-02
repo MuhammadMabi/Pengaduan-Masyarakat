@@ -41,7 +41,7 @@
                     <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                         aria-labelledby="dropdownMenuButton">
                         <li class="mb-2">
-                          <a class="dropdown-item border-radius-md" href="profile">
+                          <a class="dropdown-item border-radius-md" href="{{route('profile')}}">
                             <div class="d-flex py-1">
                               <span class="d-sm-inline d-none">Profile</span>
                             </div>

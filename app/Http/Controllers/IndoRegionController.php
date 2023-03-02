@@ -18,6 +18,7 @@ class IndoRegionController extends Controller
         $options = "<option>--Pilih Kabupaten/Kota--</option>";
 
         foreach($kabupatens as $k){
+
             $options .= "<option value='$k->id'>$k->name</option>";
         }
 

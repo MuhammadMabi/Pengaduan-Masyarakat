@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Province;
+use App\Pengaduan;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -13,7 +15,13 @@ class AuthController extends Controller
      */
     public function profile()
     {
-        return view('profile.profile');
+        $province = Province::all();
+        $laporan = Pengaduan::count();
+        $pending = Pengaduan::where('status', 'Pending')->count();
+        $proses = Pengaduan::where('status', 'Proses')->count();
+        $selesai = Pengaduan::where('status', 'Selesai')->count();
+
+        return view('profile.profile', compact('province', 'laporan', 'pending', 'proses', 'selesai'));
     }
 
     /**
