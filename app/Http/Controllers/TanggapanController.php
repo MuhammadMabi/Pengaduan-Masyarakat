@@ -7,6 +7,7 @@ use App\Tanggapan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class TanggapanController extends Controller
 {
@@ -54,6 +55,7 @@ class TanggapanController extends Controller
 
         if ($tanggapan) {
 
+            Alert::success('Success', 'Berhasil Memperbarui Tanggapan');
             $pengaduan->update([
                 'status' => $request->status
             ]);
@@ -64,6 +66,7 @@ class TanggapanController extends Controller
             return redirect()->back();
         }else {
 
+            Alert::success('Success', 'Berhasil Menaggapi');
             $pengaduan->update([
                 'status' => $request->status
             ]);

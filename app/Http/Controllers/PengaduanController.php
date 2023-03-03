@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Alert;
 
 class PengaduanController extends Controller
 {
@@ -17,7 +18,14 @@ class PengaduanController extends Controller
      */
     public function index()
     {
-        $pengaduan = Pengaduan::all();
+        $order = Pengaduan::orderBy('created_at', 'ASC')->get();
+
+        if (auth()->user()->role == 'Warga') {
+            $pengaduan = $order->where('user_id', auth()->user()->id);
+        }else{
+            $pengaduan = Pengaduan::orderBy('created_at', 'ASC')->get();
+        }
+        
         return view('pengaduan.index', compact('pengaduan'));
     }
 
@@ -40,14 +48,15 @@ class PengaduanController extends Controller
     public function createOrUpdate(Request $request)
     {
         $pengaduan = Pengaduan::where('id', $request->id)->first();
-        $foto = $pengaduan->foto;
+
+        $mytime = Carbon::now();
 
         if ($pengaduan) {
 
-            $mytime = Carbon::now();
+            Alert::success('Berhasil Memperbarui Laporan');
 
             if (!$request->foto) {
-                $img = $foto;
+                $img = $pengaduan->foto;;
             } else {
 
                 // Storage::delete($foto);
@@ -66,17 +75,17 @@ class PengaduanController extends Controller
 
             return redirect()->route('pengaduan');
         } else {
+
+            Alert::success('Berhasil Melaporkan');
+
             $this->validate($request, [
                 'isi_laporan' => 'required',
                 'foto' => 'required',
             ]);
 
-            dd($request->foto);
             $imgName = $request->foto->getClientOriginalName() . '-' . time() . '.' . $request->foto->extension();
 
             $request->foto->move(public_path('image'), $imgName);
-
-            $mytime = Carbon::now();
 
             Pengaduan::create([
                 'user_id' => auth()->user()->id,
@@ -172,6 +181,7 @@ class PengaduanController extends Controller
      */
     public function destroy($id)
     {
+        Alert::warning('Success Title', 'Success Message');
         Pengaduan::where('id', $id)->delete();
         return redirect('pengaduan');
     }

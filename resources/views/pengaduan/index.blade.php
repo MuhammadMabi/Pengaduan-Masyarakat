@@ -22,6 +22,8 @@
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
+                                    {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">
+                                        No</th> --}}
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">
                                         Nama</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
@@ -38,6 +40,13 @@
                             <tbody>
                                 @foreach ($pengaduan as $i => $p)
                                     <tr>
+                                        {{-- <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $i+1 }}</p>
+                                                </div>
+                                            </div>
+                                        </td> --}}
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
@@ -65,6 +74,7 @@
                                         <td class="align-middle text-center text-sm ">
                                             <form action="pengaduan/destroy/{{ $p->id }}" method="post">
                                                 @csrf
+                                                @method('delete')
 
                                                 <button class="text-secondary font-weight-bold text-xs"
                                                     data-toggle="tooltip" data-original-title="Edit user"
@@ -84,11 +94,13 @@
                                                         Edit
                                                     </a>
                                                 </button>
-                                                <button class="text-secondary font-weight-bold text-xs"
+                                                <button class="text-secondary font-weight-bold text-xs btndelete"
                                                     data-toggle="tooltip" data-original-title="Edit user"
                                                     style="border: none; background: none;" type="submit">
                                                     Hapus
                                                 </button>
+
+                                                <input type="hidden" class="delete_id" value="{{ $p->id }}">
 
                                             </form>
                                         </td>

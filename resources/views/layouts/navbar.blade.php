@@ -6,16 +6,27 @@
                 <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
                 <li class="breadcrumb-item text-sm text-white active" aria-current="page">Dashboard</li>
             </ol>
-            <h6 class="font-weight-bolder text-white mb-0">Dashboard</h6>
+            <h6 class="font-weight-bolder text-white mb-0">Pengaduan Masyarakat</h6>
         </nav> --}}
+        {{-- <div class="d-flex justify-content-center">
+            <ul class="navbar-nav d-lg-block d-none">
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center me-2 active" aria-current="page"
+                        href="/">
+                        <i class="fa fa-chart-pie opacity-6 text-white me-1"></i>
+                        <span class="d-sm-inline text-white d-none">Pengaduan</span>
+                    </a>
+                </li>
+            </ul>
+        </div> --}}
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
             <div class="ms-md-auto pe-md-3 d-flex align-items-center">
                 <div class="input-group">
-                    <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" placeholder="Type here...">
+                    {{-- <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                    <input type="text" class="form-control" placeholder="Type here..."> --}}
                 </div>
             </div>
-            <ul class="navbar-nav  justify-content-end">
+            <ul class="navbar-nav  justify-content-end mt-2">
                 {{-- <div class="dropdown">
             <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
               Primary
@@ -41,18 +52,20 @@
                     <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                         aria-labelledby="dropdownMenuButton">
                         <li class="mb-2">
-                          <a class="dropdown-item border-radius-md" href="{{route('profile')}}">
-                            <div class="d-flex py-1">
-                              <span class="d-sm-inline d-none">Profile</span>
-                            </div>
-                          </a>
+                            <a class="dropdown-item border-radius-md" href="{{ route('profile') }}">
+                                <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+                                <span class="d-sm-inline d-none">Profile</span>
+                            </a>
                         </li>
                         <li class="mb-2">
                             <a class="dropdown-item border-radius-md" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <div class="d-flex py-1">
+                                <i class="ni ni-button-power fixed-plugin-button-nav cursor-pointer"></i>
+                                <span class="d-sm-inline d-none">Logout</span>
+                                {{-- <div class="d-flex py-1">
+                                    <i class="ni ni-button-power fixed-plugin-button-nav cursor-pointer"></i>
                                     <span class="d-sm-inline d-none">Logout</span>
-                                </div>
+                                </div> --}}
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
@@ -60,7 +73,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                {{-- <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
                         <div class="sidenav-toggler-inner">
                             <i class="sidenav-toggler-line bg-white"></i>
@@ -156,7 +169,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>
