@@ -135,7 +135,7 @@
                     </div>
                 </div>
             </div>
-            @if (auth()->user()->role == 'Admin' || 'Petugas')
+            @if (auth()->user()->role != 'Warga')
                 <div class="card mb-4">
                     <div class="card-header pb-0">
                         <h6>Tanggapan Petugas</h6>
@@ -213,6 +213,11 @@
                     </div>
                 </div>
             @endif
+            <div class="align-middle">
+                <form action="{{ route('pengaduan') }}">
+                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Kembali</button>
+                </form>
+            </div>
         </div>
     </div>
 @endsection

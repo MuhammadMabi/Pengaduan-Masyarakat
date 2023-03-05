@@ -19,10 +19,15 @@
     <link href="../../assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="../../assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap4.min.css"> --}}
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css"> --}}
 
     {{-- Jquery --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    @yield('style')
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
@@ -134,89 +139,6 @@
     <script src="../../assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="../../assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="../../assets/js/plugins/chartjs.min.js"></script>
-    {{-- <script>
-        var ctx1 = document.getElementById("chart-line");
-
-        // var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
-
-        gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
-        gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
-        gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
-        new Chart(ctx1, {
-            type: "line",
-            data: {
-                labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                datasets: [{
-                    label: "Mobile apps",
-                    tension: 0.4,
-                    borderWidth: 0,
-                    pointRadius: 0,
-                    borderColor: "#5e72e4",
-                    backgroundColor: gradientStroke1,
-                    borderWidth: 3,
-                    fill: true,
-                    data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-                    maxBarThickness: 6
-
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false,
-                    }
-                },
-                interaction: {
-                    intersect: false,
-                    mode: 'index',
-                },
-                scales: {
-                    y: {
-                        grid: {
-                            drawBorder: false,
-                            display: true,
-                            drawOnChartArea: true,
-                            drawTicks: false,
-                            borderDash: [5, 5]
-                        },
-                        ticks: {
-                            display: true,
-                            padding: 10,
-                            color: '#fbfbfb',
-                            font: {
-                                size: 11,
-                                family: "Open Sans",
-                                style: 'normal',
-                                lineHeight: 2
-                            },
-                        }
-                    },
-                    x: {
-                        grid: {
-                            drawBorder: false,
-                            display: false,
-                            drawOnChartArea: false,
-                            drawTicks: false,
-                            borderDash: [5, 5]
-                        },
-                        ticks: {
-                            display: true,
-                            color: '#ccc',
-                            padding: 20,
-                            font: {
-                                size: 11,
-                                family: "Open Sans",
-                                style: 'normal',
-                                lineHeight: 2
-                            },
-                        }
-                    },
-                },
-            },
-        });
-    </script> --}}
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -226,7 +148,6 @@
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
     </script>
-    <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
@@ -237,53 +158,111 @@
         }
     </script> --}}
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    {{-- <script>
-        $(document).ready(function() {
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>
+        $(function() {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            $(function() {
 
-            $('.btndelete').click(function(e) {
-                e.preventDefault();
+                $('#provinsi').on('change', function() {
+                    let id_provinsi = $('#provinsi').val();
 
-                var deleteid = $(this).closest("tr").find('.delete_id').val();
-                console.log(deleteid);
-                swal({
-                        title: "Apakah Anda Yakin Ingin Menghapus Data Ini?",
-                        // text: "Setelah dihapus, Anda tidak dapat memulihkan Tag ini lagi!",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
+                    // console.log(id_provinsi);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('getkabupaten') }}",
+                        data: {
+                            id_provinsi: id_provinsi
+                        },
+                        cache: false,
+
+                        success: function(message) {
+                            $('#kabupaten').html(message);
+                            $('#kecamatan').html('');
+                            $('#desa').html('');
+                        },
+                        error: function(data) {
+                            console.log('error:', data);
+                        },
                     })
-                    .then((willDelete) => {
-                        if (willDelete) {
+                })
 
-                            var data = {
-                                "_token": $('input[name=_token]').val(),
-                                'id': deleteid,
-                            };
-                            $.ajax({
-                                type: "DELETE",
-                                url: 'pengaduan/destroy/' + deleteid,
-                                data: data,
-                                success: function(response) {
-                                    swal(response.status, {
-                                            icon: "success",
-                                        })
-                                        .then((result) => {
-                                            location.reload();
-                                        });
-                                }
-                            });
-                        }
-                    });
-            });
+                $('#kabupaten').on('change', function() {
+                    let id_kabupaten = $('#kabupaten').val();
 
+                    // console.log(id_provinsi);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('getkecamatan') }}",
+                        data: {
+                            id_kabupaten: id_kabupaten
+                        },
+                        cache: false,
+
+                        success: function(message) {
+                            $('#kecamatan').html(message);
+                            // $('#kecamatan').html('');
+                            $('#desa').html('');
+                        },
+                        error: function(data) {
+                            console.log('error:', data);
+                        },
+                    })
+                })
+
+                $('#kecamatan').on('change', function() {
+                    let id_kecamatan = $('#kecamatan').val();
+
+                    // console.log(id_provinsi);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('getdesa') }}",
+                        data: {
+                            id_kecamatan: id_kecamatan
+                        },
+                        cache: false,
+
+                        success: function(message) {
+                            $('#desa').html(message);
+                            // $('#kecamatan').html('');
+                            // $('#desa').html('');
+                        },
+                        error: function(data) {
+                            console.log('error:', data);
+                        },
+                    })
+                })
+            })
+        });
+    </script>
+
+    {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#example').DataTable();
         });
     </script> --}}
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+    </script>
+    {{-- @include('layouts.script') --}}
+
 </body>
 
 </html>

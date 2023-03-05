@@ -297,7 +297,7 @@
                                         <div class="form-group">
                                             <label for="example-text-input" class="form-control-label">Alamat</label>
                                             <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat" id="alamat" cols="30"
-                                                rows="3"></textarea>
+                                                rows="3" required></textarea>
 
                                             @error('alamat')
                                                 <span class="invalid-feedback" role="alert">

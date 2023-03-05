@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Province;
+use App\User;
 use App\Pengaduan;
+use App\Models\Province;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -29,9 +33,38 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function index()
     {
-        //
+        return view('profile.changepassword');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'new_password' => 'required',
+            'confirm_new_password' => 'required|same:new_password',
+        ]);
+
+        $user = $request->User();
+
+        if (Hash::check($request->old_password, $user->password)) {
+            if ($validator->fails()) {
+                Alert::error('Password baru dan confirm password baru tidak sama');
+                return redirect()->back();
+            }else{
+                $user->update([
+                    'password' => Hash::make($request->new_password),
+                ]);
+    
+                Alert::success('Password berhasil di update!');
+                return redirect('dashboard');
+            }
+        }else{
+            Alert::error('Password lama salah');
+            return redirect()->back();
+        }
+
     }
 
     /**

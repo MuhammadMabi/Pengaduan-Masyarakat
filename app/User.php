@@ -67,4 +67,19 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\Province');
     }
+
+    public function regency()
+    {
+        return $this->belongsTo('App\Models\Regency');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo('App\Models\District');
+    }
+
+    public function village()
+    {
+        return $this->belongsTo('App\Models\Village');
+    }
 }

@@ -327,7 +327,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group row mb-0">
                                 <div class="text-center">
                                     <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign

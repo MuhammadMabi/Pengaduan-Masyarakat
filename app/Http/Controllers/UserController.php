@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Pengaduan;
-use App\Tanggapan;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
-class DashboardController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,16 +15,15 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $pengaduan = Pengaduan::count();
-        $pending = Pengaduan::where('status', 'Pending')->count();
-        $proses = Pengaduan::where('status', 'Proses')->count();
-        $selesai = Pengaduan::where('status', 'Selesai')->count();
-        $admin = User::where('role', 'Admin')->count();
-        $petugas = User::where('role', 'Petugas')->count();
-        $warga = User::where('role', 'Warga')->count();
-        $tanggapan = Tanggapan::count();
-        $foto = Pengaduan::where('foto')->get();
-        return view('dashboard.index', compact('pengaduan', 'pending', 'proses', 'selesai', 'admin', 'petugas', 'warga', 'tanggapan', 'foto'));
+        $get_user = User::first();
+
+        if (auth()->user()->role == 'Petugas') {
+            $user = $get_user->where('role', 'Warga')->get();
+        }else {
+            $user = $get_user->get();
+        }
+
+        return view('user.index', compact('user'));
     }
 
     /**
@@ -57,7 +55,8 @@ class DashboardController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::where('id', $id)->get();
+        return view('user.show', compact('user'));
     }
 
     /**
@@ -80,7 +79,13 @@ class DashboardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Alert::success('Berhasil Mengubah Role');
+
+        $petugas = User::where('id', $id)->first();
+
+        $petugas->update($request->all());
+        return redirect()->back();
+        // dd($petugas);
     }
 
     /**
@@ -91,6 +96,7 @@ class DashboardController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::where('id', $id)->delete();
+        return redirect()->back();
     }
 }

@@ -17,7 +17,8 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "2.4",
         "parsecsv/php-parsecsv": "1.2",
-        "realrashid/sweet-alert": "^6.0"
+        "realrashid/sweet-alert": "^6.0",
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

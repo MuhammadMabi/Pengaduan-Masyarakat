@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PengaduanController extends Controller
 {

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Models\Province;
-use App\Providers\RouteServiceProvider;
 use App\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Models\Province;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class RegisterController extends Controller
 {
@@ -37,10 +38,6 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
 
     /**
      * Get a validator for an incoming registration request.
@@ -97,6 +94,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        
+        // $nik = User::where('nik', $data['nik'])->first();
+        // // dd($nik != null);
+        // if ($nik != null) {
+        //     return response('123');
+        // }
+        
         return User::create([
             'nik' => $data['nik'],
             'nama' => $data['nama'],

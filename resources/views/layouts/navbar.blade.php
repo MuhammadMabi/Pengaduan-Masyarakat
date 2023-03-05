@@ -1,3 +1,11 @@
+@section('style')
+    <style>
+        .textleft {
+            margin-left: 10px;
+        }
+    </style>
+@endsection
+
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur"
     data-scroll="false">
     <div class="container-fluid py-1 px-3">
@@ -49,19 +57,26 @@
                         <i class="fa fa-user me-sm-1"></i>
                         <span class="d-sm-inline d-none">{{ auth()->user()->nama }}</span>
                     </a>
+                    {{-- px-2 --}}
                     <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                         aria-labelledby="dropdownMenuButton">
                         <li class="mb-2">
                             <a class="dropdown-item border-radius-md" href="{{ route('profile') }}">
                                 <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
-                                <span class="d-sm-inline d-none">Profile</span>
+                                <span class="d-sm-inline d-none textleft">Profile</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="dropdown-item border-radius-md" href="{{ route('changepassword') }}">
+                                <i class="ni ni-lock-circle-open fixed-plugin-button-nav cursor-pointer"></i>
+                                <span class="d-sm-inline d-none textleft">Change Password</span>
                             </a>
                         </li>
                         <li class="mb-2">
                             <a class="dropdown-item border-radius-md" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <i class="ni ni-button-power fixed-plugin-button-nav cursor-pointer"></i>
-                                <span class="d-sm-inline d-none">Logout</span>
+                                <span class="d-sm-inline d-none textleft">Logout</span>
                                 {{-- <div class="d-flex py-1">
                                     <i class="ni ni-button-power fixed-plugin-button-nav cursor-pointer"></i>
                                     <span class="d-sm-inline d-none">Logout</span>
@@ -73,7 +88,7 @@
                         </li>
                     </ul>
                 </li>
-                {{-- <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
                         <div class="sidenav-toggler-inner">
                             <i class="sidenav-toggler-line bg-white"></i>
@@ -82,7 +97,7 @@
                         </div>
                     </a>
                 </li>
-                <li class="nav-item px-3 d-flex align-items-center">
+                {{-- <li class="nav-item px-3 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-white p-0">
                         <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
                     </a>
