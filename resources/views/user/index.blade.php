@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('menu','user')
 
 @section('content')
     @if (isset($message))

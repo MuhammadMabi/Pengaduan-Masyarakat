@@ -87,11 +87,16 @@ class PengaduanController extends Controller
 
             $request->foto->move(public_path('image'), $imgName);
 
+            $data = [
+                'foto' => $imgName,
+            ];
+
             Pengaduan::create([
                 'user_id' => auth()->user()->id,
                 'tanggal_pengaduan' => $mytime,
                 'isi_laporan' => $request->isi_laporan,
                 'foto' => $imgName,
+                // 'foto' => json_encode($data),
                 'status' => 'Pending',
             ]);
 
@@ -141,8 +146,11 @@ class PengaduanController extends Controller
     public function show($id)
     {
         $pengaduan = Pengaduan::where('id', $id)->get();
+        // $pengaduan = Pengaduan::where('id', $id)->first();
         // dd($pengaduan);
         $mytime = Carbon::now()->format('d/m/Y');
+
+        // dd($pengaduan->foto);
         // return response()->json($pengaduan);
         // dd($pengaduan);
         return view('pengaduan.show', compact('pengaduan', 'mytime'));

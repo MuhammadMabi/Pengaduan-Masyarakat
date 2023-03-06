@@ -65,7 +65,9 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="example-text-input" class="form-control-label">Password Lama</label>
-                                    <input id="old_password" type="password" class="form-control @error('old_password') is-invalid @enderror" name="old_password" required autocomplete="old_password" autofocus>
+                                    <input id="old_password" type="password"
+                                        class="form-control @error('old_password') is-invalid @enderror" name="old_password"
+                                        required autocomplete="old_password" autofocus>
 
                                     @error('old_password')
                                         <span class="invalid-feedback" role="alert">
@@ -77,7 +79,9 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="example-text-input" class="form-control-label">Password Baru</label>
-                                    <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" required autocomplete="new_password" autofocus>
+                                    <input id="new_password" type="password"
+                                        class="form-control @error('new_password') is-invalid @enderror" name="new_password"
+                                        required autocomplete="new_password" autofocus>
 
                                     @error('new_password')
                                         <span class="invalid-feedback" role="alert">
@@ -89,7 +93,9 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="example-text-input" class="form-control-label">Confirm Password Baru</label>
-                                    <input id="confirm_new_password" type="password" class="form-control @error('confirm_new_password') is-invalid @enderror" name="confirm_new_password" required autocomplete="confirm_new_password" autofocus>
+                                    <input id="confirm_new_password" type="password"
+                                        class="form-control @error('confirm_new_password') is-invalid @enderror"
+                                        name="confirm_new_password" required autocomplete="confirm_new_password" autofocus>
 
                                     @error('confirm_new_password')
                                         <span class="invalid-feedback" role="alert">
@@ -100,38 +106,17 @@
                             </div>
                             <div class="form-group row mb-0">
                                 <div class="text-center">
-                                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Change</button>
-                                </div>
-                            </div>
+                                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-0">Change</button>
                         </form>
+                        <form action="{{ route('dashboard') }}">
+                            <button class="btn bg-gradient-primary w-100 my-4 mb-2">Kembali</button>
+                        </form>
+                        {{-- <a href="{{ route('dashboard') }}">
+                                    </a> --}}
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card card-profile">
-                    {{-- <img src="/img/bg-profile.jpg" alt="Image placeholder" class="card-img-top">
-                    <div class="row justify-content-center">
-                        <div class="col-4 col-lg-4 order-lg-2">
-                            <div class="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
-                                <a href="javascript:;">
-                                    <img src="/img/team-2.jpg"
-                                        class="rounded-circle img-fluid border border-2 border-white">
-                                </a>
-                            </div>
-                        </div>
-                    </div> --}}
-                    {{-- <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
-                        <div class="d-flex justify-content-between">
-                            <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-none d-lg-block">Connect</a>
-                            <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i
-                                    class="ni ni-collection"></i></a>
-                            <a href="javascript:;"
-                                class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">Message</a>
-                            <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i
-                                    class="ni ni-email-83"></i></a>
-                        </div>
-                    </div> --}}
-                </div>
-            </div>
         </div>
-    @endsection
+    </div>
+    </div>
+@endsection

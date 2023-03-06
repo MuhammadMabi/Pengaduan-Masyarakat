@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('menu','pengaduan')
 
 @section('style')
     <style>
