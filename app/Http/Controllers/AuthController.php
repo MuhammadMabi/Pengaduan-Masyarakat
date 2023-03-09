@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\District;
 use App\User;
 use App\Pengaduan;
 use App\Models\Province;
+use App\Models\Regency;
+use App\Models\Village;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -19,13 +22,20 @@ class AuthController extends Controller
      */
     public function profile()
     {
+        $auth = auth()->user();
+
         $province = Province::all();
+        $regency = Regency::where('province_id', $auth->regency_id)->get();
+        $district = District::where('regency_id', $auth->district_id)->get();
+        $village = Village::where('district_id', $auth->village_id)->get();
+        // dd($district);
+
         $laporan = Pengaduan::count();
         $pending = Pengaduan::where('status', 'Pending')->count();
         $proses = Pengaduan::where('status', 'Proses')->count();
         $selesai = Pengaduan::where('status', 'Selesai')->count();
 
-        return view('profile.profile', compact('province', 'laporan', 'pending', 'proses', 'selesai'));
+        return view('profile.profile', compact('province', 'regency', 'district', 'village', 'laporan', 'pending', 'proses', 'selesai'));
     }
 
     /**

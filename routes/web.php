@@ -22,6 +22,9 @@ Route::get('/', function () {
     return view('landingpage');
 });
 
+Route::middleware(['guest'])->group(function () {
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -44,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('pengaduan')->group(function () {
         Route::get('/', 'PengaduanController@index')->name('pengaduan');
+        Route::get('/cetak', 'PengaduanController@cetakPengaduan')->name('cetak.pengaduan');
         Route::get('/create', 'PengaduanController@create');
         Route::get('/show/{id}', 'PengaduanController@show')->name('pengaduan.show');
         Route::get('/edit/{id}', 'PengaduanController@edit');

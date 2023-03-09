@@ -23,7 +23,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($pengaduan as $i => $p)
                                     <tr>
                                         <td>
                                             <div class="d-flex px-3 py-1">
@@ -35,7 +34,7 @@
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $p->user->nama }}</p>
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $pengaduan->user->nama }}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -52,7 +51,7 @@
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $p->tanggal_pengaduan }}</p>
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $pengaduan->tanggal_pengaduan }}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -69,7 +68,7 @@
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $p->isi_laporan }}</p>
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $pengaduan->isi_laporan }}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -86,17 +85,17 @@
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    @if ($p->status == 'Pending')
+                                                    @if ($pengaduan->status == 'Pending')
                                                         <span
-                                                            class="badge badge-sm bg-gradient-danger">{{ $p->status }}</span>
+                                                            class="badge badge-sm bg-gradient-danger">{{ $pengaduan->status }}</span>
                                                     @endif
-                                                    @if ($p->status == 'Proses')
+                                                    @if ($pengaduan->status == 'Proses')
                                                         <span
-                                                            class="badge badge-sm bg-gradient-warning">{{ $p->status }}</span>
+                                                            class="badge badge-sm bg-gradient-warning">{{ $pengaduan->status }}</span>
                                                     @endif
-                                                    @if ($p->status == 'Selesai')
+                                                    @if ($pengaduan->status == 'Selesai')
                                                         <span
-                                                            class="badge badge-sm bg-gradient-success">{{ $p->status }}</span>
+                                                            class="badge badge-sm bg-gradient-success">{{ $pengaduan->status }}</span>
                                                     @endif
                                                 </div>
                                             </div>
@@ -109,9 +108,11 @@
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <p class="text-xs font-weight-bold mb-0">Foto :</p>
                                                     <br>
+                                                    @foreach ($image as $i)
                                                     <div class="card" style="width: 18rem;">
-                                                        <img src="/image/{{ $p->foto }}" alt="Image">
+                                                        <img src="/image/{{ $i->image }}" alt="Image">
                                                     </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </td>
@@ -120,16 +121,15 @@
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <p class="text-xs font-weight-bold mb-0">Tanggapan :</p>
                                                     <br>
-                                                    @if ($p->tanggapan)
+                                                    @if ($pengaduan->tanggapan)
                                                         <p class="text-xs font-weight-bold mb-0">
-                                                            {{ $p->tanggapan->tanggapan }}
+                                                            {{ $pengaduan->tanggapan->tanggapan }}
                                                     @endif
                                                     </p>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -143,26 +143,25 @@
                     <div class="card-body">
                         <form role="form" action="{{ route('tanggapan.createOrUpdate') }}" method="post">
                             @csrf
-                            @foreach ($pengaduan as $p)
                                 <div class="mb-3">
                                     <input type="text" class="form-control" placeholder="pengaduan_id"
-                                        name="pengaduan_id" aria-label="Name" id="pengaduan_id" value="{{ $p->id }}"
+                                        name="pengaduan_id" aria-label="Name" id="pengaduan_id" value="{{ $pengaduan->id }}"
                                         hidden>
                                 </div>
                                 <div class="form-group">
                                     <label for="example-text-input" class="form-control-label">Status</label>
                                     <select class="form-control @error('status') is-invalid @enderror" name="status">
-                                        @if ($p->status == 'Pending')
+                                        @if ($pengaduan->status == 'Pending')
                                             <option value="Pending" selected>Pending</option>
                                             <option value="Proses">Proses</option>
                                             <option value="Selesai">Selesai</option>
                                         @endif
-                                        @if ($p->status == 'Proses')
+                                        @if ($pengaduan->status == 'Proses')
                                             <option value="Pending">Pending</option>
                                             <option value="Proses" selected>Proses</option>
                                             <option value="Selesai">Selesai</option>
                                         @endif
-                                        @if ($p->status == 'Selesai')
+                                        @if ($pengaduan->status == 'Selesai')
                                             <option value="Pending" selected>Pending</option>
                                             <option value="Proses">Proses</option>
                                             <option value="Selesai" selected>Selesai</option>
@@ -184,19 +183,19 @@
                                     <label for="tanggal_tanggapan" class="form-control-label">Tanggal Tanggapan</label>
                                     <input type="datetime-local" class="form-control" placeholder="tanggal_tanggapan"
                                         name="tanggal_tanggapan" aria-label="Name" id="tanggal_tanggapan"
-                                        value="{{ \Carbon\Carbon::parse($p->tanggapan->tanggal_tanggapan)->diffForHumans() }}">
+                                        value="{{ \Carbon\Carbon::parse($pengaduan->tanggapan->tanggal_tanggapan)->diffForHumans() }}">
                                 </div> --}}
                                 <div class="form-group">
                                     <label for="tanggapan">Tanggapan</label>
-                                    @if ($p->tanggapan)
-                                        <textarea class="form-control" name="tanggapan" id="tanggapan" rows="3" required>{{ $p->tanggapan->tanggapan }}</textarea>
+                                    @if ($pengaduan->tanggapan)
+                                        <textarea class="form-control" name="tanggapan" id="tanggapan" rows="3" required>{{ $pengaduan->tanggapan->tanggapan }}</textarea>
                                         @error('tanggapan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     @endif
-                                    @if ($p->tanggapan == null)
+                                    @if ($pengaduan->tanggapan == null)
                                         <textarea class="form-control" autofocus name="tanggapan" id="tanggapan" rows="3" required></textarea>
                                         @error('tanggapan')
                                             <span class="invalid-feedback" role="alert">
@@ -208,7 +207,6 @@
                                 <div class="text-center">
                                     <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Tanggapi</button>
                                 </div>
-                            @endforeach
                         </form>
                     </div>
                 </div>

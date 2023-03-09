@@ -287,6 +287,13 @@
                                         <select id="kabupaten"
                                             class="form-control @error('regency_id') is-invalid @enderror"
                                             name="regency_id">
+                                            @foreach ($regency as $r)
+                                                @if ($r->id == auth()->user()->regency_id)
+                                                    <option value="{{ $r->id }}" selected>{{ $r->name }}
+                                                    </option>
+                                                @endif
+                                                <option value="{{ $r->id }}">{{ $r->name }}</option>
+                                            @endforeach
                                         </select>
 
                                         @error('regency_id')
@@ -302,6 +309,13 @@
                                         <select id="kecamatan"
                                             class="form-control @error('district_id') is-invalid @enderror"
                                             name="district_id">
+                                            @foreach ($district as $d)
+                                                @if ($d->id == auth()->user()->district_id)
+                                                    <option value="{{ $d->id }}" selected>{{ $d->name }}
+                                                    </option>
+                                                @endif
+                                                <option value="{{ $d->id }}">{{ $d->name }}</option>
+                                            @endforeach
                                         </select>
 
                                         @error('district_id')
@@ -317,6 +331,15 @@
                                         <select id="desa"
                                             class="form-control @error('village_id') is-invalid @enderror"
                                             name="village_id">
+                                            {{-- <option value="" selected>asd --}}
+                                            </option>
+                                            @foreach ($village as $v)
+                                                @if ($v->id == auth()->user()->village_id)
+                                                    <option value="{{ $v->id }}" selected>{{ $v->name }}
+                                                    </option>
+                                                @endif
+                                                <option value="{{ $v->id }}">{{ $v->name }}</option>
+                                            @endforeach
                                         </select>
 
                                         @error('village_id')

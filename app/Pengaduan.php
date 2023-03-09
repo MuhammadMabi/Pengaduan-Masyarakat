@@ -13,9 +13,10 @@ class Pengaduan extends Model
         'user_id',
         'tanggal_pengaduan',
         'isi_laporan',
-        'foto',
         'status',
     ];
+
+    protected $casts = [ 'tanggal_pengaduan'=>'datetime'];
 
     public function tanggapan()
     {
@@ -25,5 +26,10 @@ class Pengaduan extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function image()
+    {
+        return $this->hasOne(Image::class);
     }
 }

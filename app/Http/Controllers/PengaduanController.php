@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Image;
+use App\Models\Province;
 use App\Pengaduan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -22,13 +25,25 @@ class PengaduanController extends Controller
 
         if (auth()->user()->role == 'Warga') {
             $pengaduan = $order->where('user_id', auth()->user()->id);
-        }else{
-            $pengaduan = Pengaduan::orderBy('created_at', 'ASC')->get();
+        } else {
+            $pengaduan = $order;
         }
-        
+
         return view('pengaduan.index', compact('pengaduan'));
     }
 
+    public function cetakPengaduan()
+    {
+        $order = Pengaduan::orderBy('created_at', 'ASC')->get();
+
+        if (auth()->user()->role == 'Warga') {
+            $pengaduan = $order->where('user_id', auth()->user()->id);
+        } else {
+            $pengaduan = $order;
+        }
+
+        return view('pengaduan.cetak-pengaduan', compact('pengaduan'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -69,38 +84,103 @@ class PengaduanController extends Controller
             $pengaduan->update([
                 'tanggal_pengaduan' => $mytime,
                 'isi_laporan' => $request->isi_laporan,
-                'foto' => $img,
+                // 'foto' => $img,
                 'status' => 'Pending',
             ]);
 
             return redirect()->route('pengaduan');
+            
+            // Alert::success('Berhasil Memperbarui Laporan');
+
+            // $image = Image::where('pengaduan_id', $request->id)->get();
+            // // dd($image);
+            // foreach ($image as $i) {
+            //     $foto = $i->image;
+            // }
+
+            // if (!$request->foto) {
+            //     // $img = $foto;;
+            // } else {
+
+            //     // Storage::delete($foto);
+
+            //     // $imgName = $request->foto->getClientOriginalName() . '-' . time() . '.' . $request->foto->extension();
+            //     // $request->foto->move(public_path('image'), $imgName);
+            //     // $img = $imgName;
+
+            //     if ($request->hasfile('image')) {
+            //         foreach ($request->image as $file) {
+    
+            //             $imgName = $file->getClientOriginalName() . '-' . time() . '.' . $file->extension();
+            //             $file->move(public_path('image'), $imgName);
+            //             $img = $imgName;
+
+            //             // Image::insert([
+            //             //     'pengaduan_id' => $table[0]->AUTO_INCREMENT,
+            //             //     'image' => $imgName,
+            //             // ]);
+            //         }
+            //     }
+            // }
+
+            // // Image::update($img);
+
+            // Image::where('pengaduan_id', $request->id)->update([
+            //     'image' => $img,
+            // ]);
+
+            // $pengaduan->update([
+            //     'tanggal_pengaduan' => $mytime,
+            //     'isi_laporan' => $request->isi_laporan,
+            //     // 'foto' => $img,
+            //     'status' => 'Pending',
+            // ]);
+
+            // return redirect()->route('pengaduan');
         } else {
 
-            Alert::success('Berhasil Melaporkan');
+            $table = DB::select("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'pengaduan_masyarakat' AND TABLE_NAME = 'pengaduans'");
 
             $this->validate($request, [
                 'isi_laporan' => 'required',
-                'foto' => 'required',
+                'image' => 'required', 'mimes:doc,docx,PDF,pdf,jpg,jpeg,png', 'max:255',
             ]);
 
-            $imgName = $request->foto->getClientOriginalName() . '-' . time() . '.' . $request->foto->extension();
+            // $imgName = $request->foto->getClientOriginalName() . '-' . time() . '.' . $request->foto->extension();
 
-            $request->foto->move(public_path('image'), $imgName);
+            // $request->foto->move(public_path('image'), $imgName);
 
-            $data = [
-                'foto' => $imgName,
-            ];
+            $maxfoto = $request->file('image');
 
-            Pengaduan::create([
-                'user_id' => auth()->user()->id,
-                'tanggal_pengaduan' => $mytime,
-                'isi_laporan' => $request->isi_laporan,
-                'foto' => $imgName,
-                // 'foto' => json_encode($data),
-                'status' => 'Pending',
-            ]);
+            if (count($maxfoto) <= 5) {
 
-            return redirect('pengaduan');
+                if ($request->hasfile('image')) {
+                    foreach ($request->image as $file) {
+    
+                        $imgName = $file->getClientOriginalName() . '-' . time() . '.' . $file->extension();
+                        $file->move(public_path('image'), $imgName);
+    
+                        Image::insert([
+                            'pengaduan_id' => $table[0]->AUTO_INCREMENT,
+                            'image' => $imgName,
+                        ]);
+                    }
+                }
+
+                Pengaduan::create([
+                    'user_id' => auth()->user()->id,
+                    'tanggal_pengaduan' => $mytime,
+                    'isi_laporan' => $request->isi_laporan,
+                    'status' => 'Pending',
+                ]);
+
+                Alert::success('Berhasil Melaporkan');
+    
+                return redirect('pengaduan');
+            }else {
+                Alert::error('Foto lebih dari 5');
+                return back();
+            }
         }
     }
     public function store(Request $request)
@@ -126,15 +206,6 @@ class PengaduanController extends Controller
         ]);
 
         return redirect('pengaduan');
-
-        // if ($validate) {
-        // }else{
-        //     return response()->json('gagal', 201);
-        // }
-
-        // Pengaduan::create($request->all());
-
-        // return response()->json('sukses', 201);
     }
 
     /**
@@ -145,15 +216,11 @@ class PengaduanController extends Controller
      */
     public function show($id)
     {
-        $pengaduan = Pengaduan::where('id', $id)->get();
-        // $pengaduan = Pengaduan::where('id', $id)->first();
-        // dd($pengaduan);
+        $pengaduan = Pengaduan::where('id', $id)->first();
+        $image = Image::where('pengaduan_id', $id)->get();
         $mytime = Carbon::now()->format('d/m/Y');
 
-        // dd($pengaduan->foto);
-        // return response()->json($pengaduan);
-        // dd($pengaduan);
-        return view('pengaduan.show', compact('pengaduan', 'mytime'));
+        return view('pengaduan.show', compact('pengaduan', 'mytime', 'image'));
     }
 
     /**

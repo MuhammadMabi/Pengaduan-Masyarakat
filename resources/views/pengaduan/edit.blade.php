@@ -23,7 +23,7 @@
                     </div>
                     <div class="form-group">
                         <label class="custom-file-label" for="foto">Pilih Foto</label>
-                        <input type="file" name="foto" class="form-control" id="foto" lang="en">
+                        <input type="file" name="image" class="form-control" id="foto" lang="en" multiple>
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Laporkan</button>

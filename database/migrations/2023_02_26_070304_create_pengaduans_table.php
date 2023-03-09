@@ -18,7 +18,7 @@ class CreatePengaduansTable extends Migration
             $table->string('user_id', 20);
             $table->dateTime('tanggal_pengaduan');
             $table->text('isi_laporan');
-            $table->string('foto', 255);
+            // $table->string('foto', 255);
             $table->string('status', 255);
             $table->timestamps();
         });

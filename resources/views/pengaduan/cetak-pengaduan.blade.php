@@ -29,11 +29,11 @@
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header pb-0">
-                    <h6 class="float-inline">Pengaduan</h6>
+                    {{-- <h6 class="float-inline">Pengaduan</h6>
                     <button type="button" class="btn bg-gradient-primary float-inline btn-sm btnmdl" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
                         Laporkan!
-                    </button>
+                    </button> --}}
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
@@ -46,7 +46,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">
                                         Nama</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Jam & Tanggal Pengaduan</th>
+                                        Tanggal Pengaduan</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Status</th>
@@ -74,7 +74,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $p->tanggal_pengaduan->format('H:i:s | D, M Y') }}</p>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $p->tanggal_pengaduan }}</p>
                                         </td>
                                         <td class="align-middle text-center text-sm">
                                             @if ($p->status == 'Pending')
@@ -155,7 +155,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form role="form" action="{{ route('pengaduan.createOrUpdate') }}" method="post" enctype="multipart/form-data">
+                <form role="form" action="{{ route('pengaduan.createOrUpdate') }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         {{-- <div class="mb-3">
@@ -179,9 +180,8 @@
                         </div>
                         <div class="form-group">
                             <label class="custom-file-label" for="foto">Pilih Foto</label>
-                            <input type="file" name="image[]" class="form-control" id="foto" lang="en"
-                            required multiple>
-                            <label>*Maksimal foto adalah 5</label>
+                            <input type="file" name="foto" class="form-control" id="foto" lang="en"
+                                required multiple>
                         </div>
                         {{-- <div class="mb-3">
                             <input type="text" name="status" class="form-control" placeholder="Name" value="Proses"

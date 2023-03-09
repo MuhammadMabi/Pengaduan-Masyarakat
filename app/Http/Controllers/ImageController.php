@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Pengaduan;
-use App\Tanggapan;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class ImageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,15 +13,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $pengaduan = Pengaduan::count();
-        $pending = Pengaduan::where('status', 'Pending')->count();
-        $proses = Pengaduan::where('status', 'Proses')->count();
-        $selesai = Pengaduan::where('status', 'Selesai')->count();
-        $admin = User::where('role', 'Admin')->count();
-        $petugas = User::where('role', 'Petugas')->count();
-        $warga = User::where('role', 'Warga')->count();
-        $tanggapan = Tanggapan::count();
-        return view('dashboard.index', compact('pengaduan', 'pending', 'proses', 'selesai', 'admin', 'petugas', 'warga', 'tanggapan'));
+        //
     }
 
     /**

@@ -67,7 +67,7 @@
                                     <label for="example-text-input" class="form-control-label">Password Lama</label>
                                     <input id="old_password" type="password"
                                         class="form-control @error('old_password') is-invalid @enderror" name="old_password"
-                                        required autocomplete="old_password" autofocus>
+                                        required autocomplete="old_password" value="{{ old('old_password') }}" autofocus>
 
                                     @error('old_password')
                                         <span class="invalid-feedback" role="alert">
@@ -81,7 +81,7 @@
                                     <label for="example-text-input" class="form-control-label">Password Baru</label>
                                     <input id="new_password" type="password"
                                         class="form-control @error('new_password') is-invalid @enderror" name="new_password"
-                                        required autocomplete="new_password" autofocus>
+                                        required autocomplete="new_password" value="{{ old('new_password') }}" autofocus>
 
                                     @error('new_password')
                                         <span class="invalid-feedback" role="alert">
@@ -94,7 +94,7 @@
                                 <div class="form-group">
                                     <label for="example-text-input" class="form-control-label">Confirm Password Baru</label>
                                     <input id="confirm_new_password" type="password"
-                                        class="form-control @error('confirm_new_password') is-invalid @enderror"
+                                        class="form-control @error('confirm_new_password') is-invalid @enderror"  value="{{ old('confirm_new_password') }}"
                                         name="confirm_new_password" required autocomplete="confirm_new_password" autofocus>
 
                                     @error('confirm_new_password')
