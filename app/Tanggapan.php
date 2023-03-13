@@ -15,6 +15,8 @@ class Tanggapan extends Model
         'tanggapan'
     ];
 
+    protected $casts = [ 'tanggal_tanggapan'=>'datetime'];
+
     public function pengaduan()
     {
         return $this->belongsTo(Pengaduan::class);

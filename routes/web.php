@@ -18,12 +18,13 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', function () {
-    return view('landingpage');
-});
 
 Route::middleware(['guest'])->group(function () {
 });
+
+Route::get('/', function () {
+    return view('landingpage');
+})->middleware('guest');
 
 Auth::routes();
 
@@ -42,19 +43,23 @@ Route::middleware(['auth'])->group(function () {
     Route::get('profile', 'AuthController@profile')->name('profile');
     Route::get('changepassword', 'AuthController@index')->name('changepassword');
     Route::post('changepassword', 'AuthController@changePassword')->name('changepassword');
-
+    Route::put('updateprofile/{id}', 'AuthController@update')->name('update.profile');
+    Route::delete('hapusakun/{id}', 'AuthController@destroy')->name('hapus.akun');
+    
+    Route::post('uploadimage', 'PengaduanController@uploadimage')->name('upload.image');
+    Route::delete('destroyimage/{id}', 'PengaduanController@destroyimage')->name('destroy.image');
+    
     // Pengaduan
-
+    
     Route::prefix('pengaduan')->group(function () {
         Route::get('/', 'PengaduanController@index')->name('pengaduan');
         Route::get('/cetak', 'PengaduanController@cetakPengaduan')->name('cetak.pengaduan');
-        Route::get('/create', 'PengaduanController@create');
+        Route::get('/create', 'PengaduanController@create')->middleware('warga');
         Route::get('/show/{id}', 'PengaduanController@show')->name('pengaduan.show');
-        Route::get('/edit/{id}', 'PengaduanController@edit');
+        Route::get('/edit/{id}', 'PengaduanController@edit')->middleware('warga');
         Route::post('/createOrUpdate', 'PengaduanController@createOrUpdate')->name('pengaduan.createOrUpdate');
         Route::delete('/destroy/{id}', 'PengaduanController@destroy');
     });
-
 
     // Protected Route !Warga
 
@@ -63,9 +68,9 @@ Route::middleware(['auth'])->group(function () {
         // Tanggapan
 
         Route::prefix('tanggapan')->group(function () {
-            Route::get('/', 'TanggapanController@index')->name('tanggapan');
             Route::post('/createOrUpdate', 'TanggapanController@createOrUpdate')->name('tanggapan.createOrUpdate');
-            Route::delete('/destroy/{id}', 'TanggapanController@destroy');
+            // Route::get('/', 'TanggapanController@index')->name('tanggapan');
+            // Route::delete('/destroy/{id}', 'TanggapanController@destroy');
         });
 
         // User

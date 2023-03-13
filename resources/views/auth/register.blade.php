@@ -274,7 +274,7 @@
                                             <div class="mt-2">
                                                 <input class="@error('jenis_kelamin') is-invalid @enderror"
                                                     type="radio" id="Laki-laki" name="jenis_kelamin"
-                                                    value="Laki-laki" />
+                                                    value="Laki-laki" checked />
                                                 <label for="Laki-laki">Laki_laki</label>
 
                                                 <input class="@error('jenis_kelamin') is-invalid @enderror ml-3"

@@ -20,6 +20,8 @@ class CreatePengaduansTable extends Migration
             $table->text('isi_laporan');
             // $table->string('foto', 255);
             $table->string('status', 255);
+            $table->string('latitude', 255)->nullable();
+            $table->string('longitude', 255)->nullable();
             $table->timestamps();
         });
     }

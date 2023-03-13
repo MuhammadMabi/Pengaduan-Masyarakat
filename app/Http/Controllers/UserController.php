@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $get_user = User::first();
+        $get_user = User::orderBy('role', 'ASC');
 
         if (auth()->user()->role == 'Petugas') {
             $user = $get_user->where('role', 'Warga')->get();
@@ -96,6 +96,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        Alert::success('Data berhasil dihapus');
         User::where('id', $id)->delete();
         return redirect()->back();
     }

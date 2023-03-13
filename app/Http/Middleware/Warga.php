@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class Warga
 {
@@ -12,7 +13,8 @@ class Warga
         if (Auth::check() && Auth::user()->role == 'Warga') {
             return $next($request);
         }else{
-            return redirect('dashboard');
+            Alert::warning('Anda Tidak Berhak Mengakses Halaman Ini');
+            return back();
         }
     } 
 }

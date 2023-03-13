@@ -44,7 +44,7 @@
             
     <div class="container">
         <div class="card mb-4">
-            <div class="card-body px-0 pt-0 pb-2">
+            <div class="card-body">
                 <div class="table-responsive p-0">
                     <table id="example" class="table table-striped table-bordered" style="width:100%">
                         <thead>

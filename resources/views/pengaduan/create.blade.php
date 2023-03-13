@@ -1,4 +1,5 @@
 @extends('layouts.user')
+@section('menu', 'pengaduan')
 
 @section('content')
     <div class="card z-index-0">

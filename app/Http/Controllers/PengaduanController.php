@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Image;
 use App\Models\Province;
 use App\Pengaduan;
+use App\Tanggapan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
@@ -70,73 +71,13 @@ class PengaduanController extends Controller
 
             Alert::success('Berhasil Memperbarui Laporan');
 
-            if (!$request->foto) {
-                $img = $pengaduan->foto;;
-            } else {
-
-                // Storage::delete($foto);
-
-                $imgName = $request->foto->getClientOriginalName() . '-' . time() . '.' . $request->foto->extension();
-                $request->foto->move(public_path('image'), $imgName);
-                $img = $imgName;
-            }
-
             $pengaduan->update([
                 'tanggal_pengaduan' => $mytime,
                 'isi_laporan' => $request->isi_laporan,
-                // 'foto' => $img,
-                'status' => 'Pending',
             ]);
 
             return redirect()->route('pengaduan');
             
-            // Alert::success('Berhasil Memperbarui Laporan');
-
-            // $image = Image::where('pengaduan_id', $request->id)->get();
-            // // dd($image);
-            // foreach ($image as $i) {
-            //     $foto = $i->image;
-            // }
-
-            // if (!$request->foto) {
-            //     // $img = $foto;;
-            // } else {
-
-            //     // Storage::delete($foto);
-
-            //     // $imgName = $request->foto->getClientOriginalName() . '-' . time() . '.' . $request->foto->extension();
-            //     // $request->foto->move(public_path('image'), $imgName);
-            //     // $img = $imgName;
-
-            //     if ($request->hasfile('image')) {
-            //         foreach ($request->image as $file) {
-    
-            //             $imgName = $file->getClientOriginalName() . '-' . time() . '.' . $file->extension();
-            //             $file->move(public_path('image'), $imgName);
-            //             $img = $imgName;
-
-            //             // Image::insert([
-            //             //     'pengaduan_id' => $table[0]->AUTO_INCREMENT,
-            //             //     'image' => $imgName,
-            //             // ]);
-            //         }
-            //     }
-            // }
-
-            // // Image::update($img);
-
-            // Image::where('pengaduan_id', $request->id)->update([
-            //     'image' => $img,
-            // ]);
-
-            // $pengaduan->update([
-            //     'tanggal_pengaduan' => $mytime,
-            //     'isi_laporan' => $request->isi_laporan,
-            //     // 'foto' => $img,
-            //     'status' => 'Pending',
-            // ]);
-
-            // return redirect()->route('pengaduan');
         } else {
 
             $table = DB::select("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'pengaduan_masyarakat' AND TABLE_NAME = 'pengaduans'");
@@ -145,10 +86,6 @@ class PengaduanController extends Controller
                 'isi_laporan' => 'required',
                 'image' => 'required', 'mimes:doc,docx,PDF,pdf,jpg,jpeg,png', 'max:255',
             ]);
-
-            // $imgName = $request->foto->getClientOriginalName() . '-' . time() . '.' . $request->foto->extension();
-
-            // $request->foto->move(public_path('image'), $imgName);
 
             $maxfoto = $request->file('image');
 
@@ -172,6 +109,8 @@ class PengaduanController extends Controller
                     'tanggal_pengaduan' => $mytime,
                     'isi_laporan' => $request->isi_laporan,
                     'status' => 'Pending',
+                    'latitude' => $request->latitude,
+                    'longitude' => $request->longitude,
                 ]);
 
                 Alert::success('Berhasil Melaporkan');
@@ -183,6 +122,42 @@ class PengaduanController extends Controller
             }
         }
     }
+
+    public function uploadimage(Request $request)
+    {
+        $this->validate($request, [
+            'image' => 'required', 'mimes:doc,docx,PDF,pdf,jpg,jpeg,png', 'max:255',
+        ]);
+
+        $reqfoto = $request->file('image');
+        $oldfoto = Image::where('pengaduan_id', $request->pengaduan_id)->count();
+        $maxfoto = count($reqfoto) + $oldfoto <= 5;
+        // dd($maxfoto);
+
+        if ($maxfoto) {
+
+            if ($request->hasfile('image')) {
+                foreach ($request->image as $file) {
+
+                    $imgName = $file->getClientOriginalName() . '-' . time() . '.' . $file->extension();
+                    $file->move(public_path('image'), $imgName);
+
+                    Image::insert([
+                        'pengaduan_id' => $request->pengaduan_id,
+                        'image' => $imgName,
+                    ]);
+                }
+            }
+
+            Alert::success('Berhasil Menambahkan Foto');
+
+            return back();
+        }else {
+            Alert::error('Foto lebih dari 5');
+            return back();
+        }
+    }
+
     public function store(Request $request)
     {
 
@@ -217,10 +192,19 @@ class PengaduanController extends Controller
     public function show($id)
     {
         $pengaduan = Pengaduan::where('id', $id)->first();
+        $tanggapan = Tanggapan::where('pengaduan_id', $id)->first();
         $image = Image::where('pengaduan_id', $id)->get();
         $mytime = Carbon::now()->format('d/m/Y');
 
-        return view('pengaduan.show', compact('pengaduan', 'mytime', 'image'));
+        return view('pengaduan.show', compact('pengaduan', 'mytime', 'image', 'tanggapan'));
+    }
+
+    public function destroyimage($id)
+    {
+        // dd($id);
+        Alert::success('Foto berhasil dihapus!');
+        Image::where('id', $id)->delete();
+        return back();
     }
 
     /**
@@ -256,8 +240,9 @@ class PengaduanController extends Controller
      */
     public function destroy($id)
     {
-        Alert::warning('Success Title', 'Success Message');
+        Alert::success('Data berhasil dihapus!');
         Pengaduan::where('id', $id)->delete();
+        Tanggapan::where('pengaduan_id', $id)->delete();
         return redirect('pengaduan');
     }
 }

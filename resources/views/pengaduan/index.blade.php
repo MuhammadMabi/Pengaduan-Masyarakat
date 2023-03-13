@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('menu','pengaduan')
+@section('menu', 'pengaduan')
 
 @section('style')
     <style>
@@ -8,6 +8,7 @@
             vertical-align: middle;
             margin: 10px 0;
         }
+
         .btnmdl {
             margin-left: 10px;
         }
@@ -30,10 +31,12 @@
             <div class="card mb-4">
                 <div class="card-header pb-0">
                     <h6 class="float-inline">Pengaduan</h6>
-                    <button type="button" class="btn bg-gradient-primary float-inline btn-sm btnmdl" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
-                        Laporkan!
-                    </button>
+                    @if (auth()->user()->role == 'Warga')
+                        <button type="button" class="btn bg-gradient-primary float-inline btn-sm btnmdl"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Laporkan!
+                        </button>
+                    @endif
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
@@ -57,12 +60,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($pengaduan as $i => $p)
+                                @foreach ($pengaduan as $p)
                                     <tr>
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $i + 1 }}</p>
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $loop->index+1 }}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -74,16 +77,17 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $p->tanggal_pengaduan->format('H:i:s | D, M Y') }}</p>
+                                            <p class="text-xs font-weight-bold mb-0">
+                                                {{ $p->tanggal_pengaduan->format('H:i:s | D, M Y') }}</p>
                                         </td>
                                         <td class="align-middle text-center text-sm">
                                             @if ($p->status == 'Pending')
                                                 <span class="badge badge-sm bg-gradient-danger">{{ $p->status }}</span>
-                                            @endif
-                                            @if ($p->status == 'Proses')
+                                            {{-- @elseif ($p->status == 'Ditolak')
+                                                <span class="badge badge-sm bg-default">{{ $p->status }}</span> --}}
+                                            @elseif ($p->status == 'Proses')
                                                 <span class="badge badge-sm bg-gradient-warning">{{ $p->status }}</span>
-                                            @endif
-                                            @if ($p->status == 'Selesai')
+                                            @else
                                                 <span class="badge badge-sm bg-gradient-success">{{ $p->status }}</span>
                                             @endif
                                         </td>
@@ -125,14 +129,12 @@
                                                         </a>
                                                     </button>
                                                 @endif
-                                                <button class="text-secondary font-weight-bold text-xs btndelete"
+                                                <button
+                                                    class="text-secondary font-weight-bold text-xs btndelete show_confirm"
                                                     data-toggle="tooltip" data-original-title="Edit user"
-                                                    style="border: none; background: none;" type="submit">
+                                                    style="border: none; background: none;" type="submit" title='Delete'>
                                                     Hapus
                                                 </button>
-
-                                                <input type="hidden" class="delete_id" value="{{ $p->id }}">
-
                                             </form>
                                         </td>
                                     </tr>
@@ -155,7 +157,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form role="form" action="{{ route('pengaduan.createOrUpdate') }}" method="post" enctype="multipart/form-data">
+                <form role="form" action="{{ route('pengaduan.createOrUpdate') }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         {{-- <div class="mb-3">
@@ -180,9 +183,19 @@
                         <div class="form-group">
                             <label class="custom-file-label" for="foto">Pilih Foto</label>
                             <input type="file" name="image[]" class="form-control" id="foto" lang="en"
-                            required multiple>
+                                required multiple>
                             <label>*Maksimal foto adalah 5</label>
                         </div>
+                        <textarea class="form-control" name="latitude" rows="1" id="latitude" hidden></textarea>
+                        <textarea class="form-control" name="longitude" rows="1" id="longitude" hidden></textarea>
+                        {{-- <input type="text" name="latitude" class="form-control" id="latitude" lang="en" />
+                        <input type="text" name="longitude" class="form-control" id="longitude" lang="en" /> --}}
+
+                        {{-- <div id="location"></div>
+                        <div id="latitude"></div>
+                        <div id="longitude"></div> --}}
+
+
                         {{-- <div class="mb-3">
                             <input type="text" name="status" class="form-control" placeholder="Name" value="Proses"
                                 aria-label="Status" id="status">
@@ -192,11 +205,52 @@
                         </div> --}}
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn bg-gradient-primary">Laporkan</button>
+                        <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Tutup</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+@section('script')
+    <script>
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
+        }
+
+        function showPosition(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            // var inputlatitude = latitude;
+            // var inputlongitude = longitude;
+            // var location = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+            // document.getElementById("location").innerHTML = location;
+            document.getElementById("latitude").innerHTML = latitude;
+            document.getElementById("longitude").innerHTML = longitude;
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        $('.show_confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Apakah anda yakin ingin menghapus laporan ini?`,
+                    // text: "If you delete this, it will be gone forever.",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+    </script>
+@endsection
 @endsection

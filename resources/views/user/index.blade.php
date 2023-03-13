@@ -116,9 +116,9 @@
                                                         Detail
                                                     </a>
                                                 </button>
-                                                <button class="text-secondary font-weight-bold text-xs btndelete"
+                                                <button class="text-secondary font-weight-bold text-xs btndelete show_confirm"
                                                     data-toggle="tooltip" data-original-title="Edit user"
-                                                    style="border: none; background: none;" type="submit">
+                                                    style="border: none; background: none;" type="submit" data-toggle="tooltip" title='Delete'>
                                                     Hapus
                                                 </button>
 
@@ -135,4 +135,26 @@
             </div>
         </div>
     </div>
+    @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        $('.show_confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Apakah anda yakin ingin menghapus data ini?`,
+                    // text: "If you delete this, it will be gone forever.",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+    </script>
+    @endsection
 @endsection

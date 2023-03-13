@@ -109,7 +109,7 @@
                                     <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-0">Change</button>
                         </form>
                         <form action="{{ route('dashboard') }}">
-                            <button class="btn bg-gradient-primary w-100 my-4 mb-2">Kembali</button>
+                            <button class="btn bg-gradient-danger w-100 my-4 mb-2">Kembali</button>
                         </form>
                         {{-- <a href="{{ route('dashboard') }}">
                                     </a> --}}

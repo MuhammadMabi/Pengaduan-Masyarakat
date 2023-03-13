@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\District;
 use App\User;
 use App\Pengaduan;
-use App\Models\Province;
+use App\Tanggapan;
 use App\Models\Regency;
 use App\Models\Village;
+use App\Models\District;
+use App\Models\Province;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
@@ -23,12 +26,17 @@ class AuthController extends Controller
     public function profile()
     {
         $auth = auth()->user();
+        // $lahir = $auth->tanggal_lahir->format('Y');
+        // $mytime = Carbon::now()->format('Y');
+
+        // dd($mytime - $lahir);
+        // $umur = $mytime - $lahir;
 
         $province = Province::all();
-        $regency = Regency::where('province_id', $auth->regency_id)->get();
-        $district = District::where('regency_id', $auth->district_id)->get();
-        $village = Village::where('district_id', $auth->village_id)->get();
-        // dd($district);
+        $regency = Regency::where('province_id', $auth->province_id)->get();
+        $district = District::where('regency_id', $auth->regency_id)->get();
+        $village = Village::where('district_id', $auth->district_id)->get();
+        // dd($regency);
 
         $laporan = Pengaduan::count();
         $pending = Pengaduan::where('status', 'Pending')->count();
@@ -62,64 +70,46 @@ class AuthController extends Controller
             if ($validator->fails()) {
                 Alert::error('Password baru dan confirm password baru tidak sama');
                 return redirect()->back();
-            }else{
+            } else {
                 $user->update([
                     'password' => Hash::make($request->new_password),
                 ]);
-    
+
                 Alert::success('Password berhasil di update!');
                 return redirect('dashboard');
             }
-        }else{
+        } else {
             Alert::error('Password lama salah');
             return redirect()->back();
         }
-
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'nik' => 'required|min:16|max:20|unique:users,nik,'.auth()->user()->id,
+            'nama' => 'required|max:255',
+            'email' => 'required|email|unique:users,email,'.auth()->user()->id,
+            // 'password' => 'required|min:5|max:255',
+            // 'confirmpassword' => 'required|min:5|max:255|same:password',
+            'telp' => 'required|max:20',
+            'jenis_kelamin' => 'required',
+            // 'role' => 'required',
+            'tanggal_lahir' => 'required',
+            'alamat' => 'required',
+            'rt' => 'required|max:10',
+            'rw' => 'required|max:10',
+            'kode_pos' => 'required|max:10',
+            'province_id' => 'required',
+            'regency_id' => 'required',
+            'district_id' => 'required',
+            'village_id' => 'required',
+        ]);
+
+        User::find(auth()->user()->id)->update($request->all());
+
+        Alert::success('Profile berhasil di update!');
+        return back();
     }
 
     /**
@@ -130,6 +120,10 @@ class AuthController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::where('id', $id)->delete();
+        Pengaduan::where('user_id', $id)->delete();
+        Tanggapan::where('user_id', $id)->delete();
+        return redirect('login');
+        Alert::success('Akun anda berhasil dihapus!');
     }
 }

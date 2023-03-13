@@ -14,6 +14,8 @@ class Pengaduan extends Model
         'tanggal_pengaduan',
         'isi_laporan',
         'status',
+        'latitude',
+        'longitude',
     ];
 
     protected $casts = [ 'tanggal_pengaduan'=>'datetime'];

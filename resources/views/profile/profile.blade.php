@@ -55,14 +55,14 @@
                 <div class="card">
                     <div class="card-header pb-0">
                         <div class="d-flex align-items-center">
-                            <p class="mb-0">Edit Profile</p>
-                            <button class="btn btn-primary btn-sm ms-auto">Settings</button>
+                            <h6 class="float-inline">Profile</h6>
+                            {{-- <button class="btn btn-primary btn-sm ms-auto">Settings</button> --}}
                         </div>
                     </div>
                     <div class="card-body">
-                        <p class="text-uppercase text-sm">User Information</p>
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="updateprofile/{{ auth()->user()->id }}">
                             @csrf
+                            @method('PUT')
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -196,10 +196,6 @@
                                         @enderror
                                     </div>
                                 </div>
-
-                                <input id="role" type="text"
-                                    class="form-control @error('role') is-invalid @enderror" name="role"
-                                    value="Warga" required autocomplete="role" autofocus hidden>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -352,12 +348,19 @@
                             </div>
                             <div class="form-group row mb-0">
                                 <div class="text-center">
-                                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign
-                                        up</button>
-                                    <p class="text-sm mt-3 mb-0">Already have an account? <a href="login"
-                                            class="text-dark font-weight-bolder">Sign in</a></p>
+                                    {{-- <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Update</button> --}}
+                                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-0">Update</button>
                                 </div>
                             </div>
+                        </form>
+                        {{-- <form method="post" action="hapusakun/{{ auth()->user()->id }}">
+                            @csrf
+                            @method('delete')
+
+                            <button class="btn bg-gradient-danger w-100 my-4 mb-0 btndelete show_confirm" type="submit" data-toggle="tooltip" title='Delete'>Hapus Akun Anda</button>
+                        </form> --}}
+                        <form action="{{ route('dashboard') }}">
+                            <button class="btn bg-gradient-danger w-100 my-4 mb-2">Kembali</button>
                         </form>
                     </div>
                 </div>
@@ -387,10 +390,27 @@
                         </div>
                     </div> --}}
                     <div class="card-body pt-0 mt-3">
+                        <div class="text-center mt-4">
+                            <h5>
+                                {{ auth()->user()->nama }}<span class="font-weight-light"></span>
+                            </h5>
+                            <div>
+                                
+                                <span class="text-sm opacity-8">{{ auth()->user()->telp }}, {{ auth()->user()->regency->name }}</span>
+                                <i class="ni location_pin mr-2"></i>
+                            </div>
+                            <div class="h6 mt-4">
+                                {{-- <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer --}}
+                            </div>
+                            <div>
+                                {{-- <i class="ni education_hat mr-2"></i>University of Computer Science --}}
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col">
-                                <div class="d-grid text-center">
-                                    <span class="text-lg font-weight-bolder">{{ $laporan }} Laporan</span>
+                                <div class="d-grid text-center mb-3">
+                                    <span class="text-lg font-weight-bolder">{{ $laporan }}</span>
+                                    <span class="text-lg font-weight-bolder">Laporan</span>
                                 </div>
                                 <div class="d-flex justify-content-center">
                                     <div class="d-grid text-center">
@@ -412,22 +432,30 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center mt-4">
-                            <h5>
-                                {{ auth()->user()->nama }}<span class="font-weight-light"></span>
-                            </h5>
-                            <div class="h6 font-weight-300">
-                                <i class="ni location_pin mr-2"></i>{{ auth()->user()->telp }}, Romania
-                            </div>
-                            <div class="h6 mt-4">
-                                <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
-                            </div>
-                            <div>
-                                <i class="ni education_hat mr-2"></i>University of Computer Science
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    @endsection
+    {{-- @section('script')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+        <script type="text/javascript">
+            $('.show_confirm').click(function(event) {
+                var form = $(this).closest("form");
+                var name = $(this).data("name");
+                event.preventDefault();
+                swal({
+                        title: `Apakah anda yakin ingin menghapus akun ini?`,
+                        // text: "If you delete this, it will be gone forever.",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            form.submit();
+                        }
+                    });
+            });
+        </script>
+    @endsection --}}
+@endsection

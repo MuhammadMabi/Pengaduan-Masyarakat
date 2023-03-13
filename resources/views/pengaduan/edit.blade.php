@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('menu', 'pengaduan')
 
 @section('content')
     <div class="card z-index-0">
@@ -11,24 +12,27 @@
             <form role="form" action="{{ route('pengaduan.createOrUpdate') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @foreach ($pengaduan as $p)
-                <input type="number" name="id" value="{{ $p->id }}" hidden>
+                    <input type="number" name="id" value="{{ $p->id }}" hidden>
                     <div class="form-group">
                         <label for="isi_laporan">Isi Pengaduan</label>
                         <textarea class="form-control" name="isi_laporan" id="isi_laporan" rows="3" required>{{ $p->isi_laporan }}</textarea>
-                        @error('isi_laporan')
+                        {{-- @error('isi_laporan')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
-                        @enderror
+                        @enderror --}}
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label class="custom-file-label" for="foto">Pilih Foto</label>
                         <input type="file" name="image" class="form-control" id="foto" lang="en" multiple>
-                    </div>
+                    </div> --}}
                     <div class="text-center">
-                        <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Laporkan</button>
+                        <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-0">Update</button>
                     </div>
                 @endforeach
+            </form>
+            <form action="{{ route('pengaduan') }}">
+                <button type="submit" class="btn bg-gradient-danger w-100 my-4 mb-2">Kembali</button>
             </form>
             {{-- <form role="form" action="{{ route('pengaduan.createOrUpdate') }}" method="post"
                 enctype="multipart/form-data">
