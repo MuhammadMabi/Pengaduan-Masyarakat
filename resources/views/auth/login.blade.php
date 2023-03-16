@@ -1,17 +1,3 @@
-<!--
-=========================================================
-* Argon Dashboard 2 - v2.0.4
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <title>
-        Argon Dashboard 2 by Creative Tim
+        Login - Pengaduan Masyarakat
     </title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -57,36 +43,11 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navigation">
                             <ul class="navbar-nav mx-auto">
-                                {{-- <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center me-2 active" aria-current="page"
-                                        href="/">
-                                        <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i>
-                                        Home
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link me-2" href="../pages/profile.html">
-                                        <i class="fa fa-user opacity-6 text-dark me-1"></i>
-                                        Profile
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link me-2" href="../pages/sign-up.html">
-                                        <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
-                                        Sign Up
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link me-2" href="../pages/sign-in.html">
-                                        <i class="fas fa-key opacity-6 text-dark me-1"></i>
-                                        Sign In
-                                    </a>
-                                </li> --}}
                             </ul>
                             <ul class="navbar-nav d-lg-block d-none">
                                 <li class="nav-item">
                                     <a class="nav-link d-flex align-items-center me-2 active" aria-current="page"
-                                        href="/">
+                                        href="{{ route('landingpage') }}">
                                         <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i>
                                         Home
                                     </a>
@@ -94,18 +55,12 @@
                             </ul>
                             <ul class="navbar-nav d-lg-block d-none">
                                 <li class="nav-item">
-                                    <a class="nav-link me-2" href="register">
+                                    <a class="nav-link me-2" href="{{ route('register') }}">
                                         <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
                                         Sign Up
                                     </a>
                                 </li>
                             </ul>
-                            {{-- <ul class="navbar-nav d-lg-block d-none">
-                                <li class="nav-item">
-                                    <a href="/"
-                                        class="btn btn-sm mb-0 me-1 btn-primary">Kembali</a>
-                                </li>
-                            </ul> --}}
                         </div>
                     </div>
                 </nav>
@@ -131,7 +86,7 @@
                                             <input type="email" name="email"
                                                 class="form-control form-control-lg @error('email') is-invalid @enderror"
                                                 required autocomplete="email" autofocus placeholder="Email"
-                                                aria-label="Email">
+                                                aria-label="Email" value="{{ old('email') }}">
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -167,11 +122,6 @@
                                             {{ __('Forgot Your Password?') }}
                                         </a>
                                     @endif
-                                    {{-- <p class="mb-4 text-sm mx-auto">
-                                        Don't have an account?
-                                        <a href="javascript:;"
-                                            class="text-primary text-gradient font-weight-bold">Sign up</a>
-                                    </p> --}}
                                 </div>
                             </div>
                         </div>

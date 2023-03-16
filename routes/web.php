@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use RealRashid\SweetAlert\Facades\Alert;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,73 +16,91 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-
 Route::middleware(['guest'])->group(function () {
 });
 
 Route::get('/', function () {
     return view('landingpage');
-})->middleware('guest');
+})->middleware('guest')->name('landingpage');
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+ 
+    return redirect('/verify-user');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::get('verify-user', function () {
+    Alert::success('Success Verify', 'Selamat akun anda sudah terverifikasi!');
+    return redirect('dashboard');
+})->middleware('auth', 'verified');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
+// Indo Region
 Route::post('getkabupaten', 'IndoRegionController@getkabupaten')->name('getkabupaten');
 Route::post('getkecamatan', 'IndoRegionController@getkecamatan')->name('getkecamatan');
 Route::post('getdesa', 'IndoRegionController@getdesa')->name('getdesa');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
+    // Dashboard
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 
     // Profile
-
     Route::get('profile', 'AuthController@profile')->name('profile');
     Route::get('changepassword', 'AuthController@index')->name('changepassword');
     Route::post('changepassword', 'AuthController@changePassword')->name('changepassword');
     Route::put('updateprofile/{id}', 'AuthController@update')->name('update.profile');
     Route::delete('hapusakun/{id}', 'AuthController@destroy')->name('hapus.akun');
     
-    Route::post('uploadimage', 'PengaduanController@uploadimage')->name('upload.image');
-    Route::delete('destroyimage/{id}', 'PengaduanController@destroyimage')->name('destroy.image');
-    
+
     // Pengaduan
-    
     Route::prefix('pengaduan')->group(function () {
-        Route::get('/', 'PengaduanController@index')->name('pengaduan');
-        Route::get('/cetak', 'PengaduanController@cetakPengaduan')->name('cetak.pengaduan');
-        Route::get('/create', 'PengaduanController@create')->middleware('warga');
-        Route::get('/show/{id}', 'PengaduanController@show')->name('pengaduan.show');
-        Route::get('/edit/{id}', 'PengaduanController@edit')->middleware('warga');
-        Route::post('/createOrUpdate', 'PengaduanController@createOrUpdate')->name('pengaduan.createOrUpdate');
-        Route::delete('/destroy/{id}', 'PengaduanController@destroy');
+        Route::get('', 'PengaduanController@index')->name('pengaduan');
+        Route::get('show/{id}', 'PengaduanController@show')->name('pengaduan.show');
+        Route::delete('destroy/{id}', 'PengaduanController@destroy');
+
+        Route::middleware(['warga'])->group(function () {
+            Route::get('laporan', 'PengaduanController@create')->name('laporan');
+            Route::get('edit/{id}', 'PengaduanController@edit');
+            Route::post('createOrUpdate', 'PengaduanController@createOrUpdate')->name('pengaduan.createOrUpdate');
+            Route::post('uploadimage', 'PengaduanController@uploadimage')->name('upload.image');
+            Route::delete('destroyimage/{id}', 'PengaduanController@destroyimage')->name('destroy.image');
+        });
     });
 
-    // Protected Route !Warga
+    // Protected Route !Warga | Akses untuk Admin & Petugas
 
     Route::middleware(['petugas'])->group(function () {
 
-        // Tanggapan
+        // Kategori
+        Route::prefix('kategori')->group(function () {
+            Route::get('', 'KategoriController@index')->name('kategori');
+            Route::get('edit/{id}', 'KategoriController@edit');
+            Route::post('createOrUpdate', 'KategoriController@createOrUpdate')->name('kategori.createOrUpdate');
+            Route::delete('destroy/{id}', 'KategoriController@destroy');
+        });
 
+        // Tanggapan
         Route::prefix('tanggapan')->group(function () {
             Route::post('/createOrUpdate', 'TanggapanController@createOrUpdate')->name('tanggapan.createOrUpdate');
-            // Route::get('/', 'TanggapanController@index')->name('tanggapan');
-            // Route::delete('/destroy/{id}', 'TanggapanController@destroy');
         });
 
         // User
-
         Route::prefix('user')->group(function () {
             Route::get('/', 'UserController@index')->name('user');
-            Route::put('/update/{id}', 'UserController@update');
+            Route::put('/update/{id}', 'UserController@updateRole');
             Route::get('/show/{id}', 'UserController@show');
             Route::delete('/destroy/{id}', 'UserController@destroy');
         });
+    
+        // Cetak Laporan
+        Route::get('/laporan', 'PengaduanController@cetakPengaduan')->name('cetak');
+        Route::get('/cetakpdf/{tanggal_awal}/{tanggal_akhir}', 'PengaduanController@cetakpdf')->name('cetak.pengaduan');
 
     });
 

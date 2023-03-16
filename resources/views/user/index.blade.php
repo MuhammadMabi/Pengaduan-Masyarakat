@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('menu','user')
+@section('menu', 'user')
+@section('title','User')
 
 @section('content')
     @if (isset($message))
@@ -18,9 +19,9 @@
                 <div class="card-header pb-0">
                     <h6>Data User</h6>
                 </div>
-                <div class="card-body px-0 pt-0 pb-2">
+                <div class="card-body">
                     <div class="table-responsive p-0">
-                        <table class="table align-items-center mb-0">
+                        <table id="example" class="table align-items-center mb-0" style="width:100%">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3"
@@ -35,13 +36,6 @@
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Action</th>
-                                    {{-- <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Status</th> --}}
-                                    {{-- <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Employed</th> --}}
-                                    {{-- <th class="text-secondary opacity-7"></th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -75,28 +69,28 @@
                                                         @if (auth()->user()->role == 'Petugas')
                                                             <p class="text-xs font-weight-bold mb-0">{{ $u->role }}</p>
                                                         @else
-                                                        <form action="user/update/{{ $u->id }}" method="POST">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <select id="provinsi" class="form-control form-control-sm"
-                                                                name="role" onchange="this.form.submit()">
-                                                                @if ($u->role == 'Admin')
-                                                                    <option value="Admin" selected>Admin</option>
-                                                                    <option value="Petugas">Petugas</option>
-                                                                    <option value="Warga">Warga</option>
-                                                                @endif
-                                                                @if ($u->role == 'Petugas')
-                                                                    <option value="Admin">Admin</option>
-                                                                    <option value="Petugas" selected>Petugas</option>
-                                                                    <option value="Warga">Warga</option>
-                                                                @endif
-                                                                @if ($u->role == 'Warga')
-                                                                    <option value="Admin">Admin</option>
-                                                                    <option value="Petugas">Petugas</option>
-                                                                    <option value="Warga" selected>Warga</option>
-                                                                @endif
-                                                            </select>
-                                                        </form>
+                                                            <form action="user/update/{{ $u->id }}" method="POST">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <select id="provinsi" class="form-control form-control-sm"
+                                                                    name="role" onchange="this.form.submit()">
+                                                                    @if ($u->role == 'Admin')
+                                                                        <option value="Admin" selected>Admin</option>
+                                                                        <option value="Petugas">Petugas</option>
+                                                                        <option value="Warga">Warga</option>
+                                                                    @endif
+                                                                    @if ($u->role == 'Petugas')
+                                                                        <option value="Admin">Admin</option>
+                                                                        <option value="Petugas" selected>Petugas</option>
+                                                                        <option value="Warga">Warga</option>
+                                                                    @endif
+                                                                    @if ($u->role == 'Warga')
+                                                                        <option value="Admin">Admin</option>
+                                                                        <option value="Petugas">Petugas</option>
+                                                                        <option value="Warga" selected>Warga</option>
+                                                                    @endif
+                                                                </select>
+                                                            </form>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -116,9 +110,11 @@
                                                         Detail
                                                     </a>
                                                 </button>
-                                                <button class="text-secondary font-weight-bold text-xs btndelete show_confirm"
+                                                <button
+                                                    class="text-secondary font-weight-bold text-xs btndelete show_confirm"
                                                     data-toggle="tooltip" data-original-title="Edit user"
-                                                    style="border: none; background: none;" type="submit" data-toggle="tooltip" title='Delete'>
+                                                    style="border: none; background: none;" type="submit"
+                                                    data-toggle="tooltip" title='Delete'>
                                                     Hapus
                                                 </button>
 
@@ -135,7 +131,8 @@
             </div>
         </div>
     </div>
-    @section('script')
+
+@section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
     <script type="text/javascript">
         $('.show_confirm').click(function(event) {
@@ -144,7 +141,6 @@
             event.preventDefault();
             swal({
                     title: `Apakah anda yakin ingin menghapus data ini?`,
-                    // text: "If you delete this, it will be gone forever.",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -156,5 +152,5 @@
                 });
         });
     </script>
-    @endsection
+@endsection
 @endsection

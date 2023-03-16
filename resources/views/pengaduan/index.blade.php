@@ -1,5 +1,10 @@
 @extends('layouts.app')
 @section('menu', 'pengaduan')
+@if (auth()->user()->role == 'Warga')
+    @section('title', 'Laporan-ku')
+@else
+    @section('title', 'Pengaduan')
+@endif
 
 @section('style')
     <style>
@@ -29,34 +34,35 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
-                <div class="card-header pb-0">
-                    <h6 class="float-inline">Pengaduan</h6>
-                    @if (auth()->user()->role == 'Warga')
-                        <button type="button" class="btn bg-gradient-primary float-inline btn-sm btnmdl"
-                            data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Laporkan!
-                        </button>
-                    @endif
+                <div class="card-header text-center pb-0">
+                    <h6 class="float-inline">
+                        @if (auth()->user()->role == 'Warga')
+                            Laporan-ku
+                        @else
+                            Pengaduan
+                        @endif
+                    </h6>
                 </div>
-                <div class="card-body px-0 pt-0 pb-2">
+                <div class="card-body">
                     <div class="table-responsive p-0">
-                        <table class="table align-items-center mb-0">
+                        <table id="example" class="table align-items-center mb-0" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3"
-                                        width="5%">
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">
                                         No</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">
-                                        Nama</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Jam & Tanggal Pengaduan</th>
+                                        Nama Pelapor</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">
+                                        Kategori</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Tanggal Pengaduan</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Status</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Action</th>
-                                    {{-- <th class="text-secondary opacity-7"></th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -65,7 +71,7 @@
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $loop->index+1 }}</p>
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $loop->index + 1 }}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -77,23 +83,28 @@
                                             </div>
                                         </td>
                                         <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $p->kategori->kategori }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
                                             <p class="text-xs font-weight-bold mb-0">
-                                                {{ $p->tanggal_pengaduan->format('H:i:s | D, M Y') }}</p>
+                                                {{ $p->tanggal_pengaduan->formatLocalized('%d %B %Y') }}</p>
                                         </td>
                                         <td class="align-middle text-center text-sm">
                                             @if ($p->status == 'Pending')
                                                 <span class="badge badge-sm bg-gradient-danger">{{ $p->status }}</span>
-                                            {{-- @elseif ($p->status == 'Ditolak')
-                                                <span class="badge badge-sm bg-default">{{ $p->status }}</span> --}}
+                                            @elseif ($p->status == 'Ditolak')
+                                                <span class="badge badge-sm bg-default">{{ $p->status }}</span>
                                             @elseif ($p->status == 'Proses')
                                                 <span class="badge badge-sm bg-gradient-warning">{{ $p->status }}</span>
                                             @else
                                                 <span class="badge badge-sm bg-gradient-success">{{ $p->status }}</span>
                                             @endif
                                         </td>
-                                        {{-- <td class="align-middle text-center">
-                                        <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                                    </td> --}}
                                         <td class="align-middle text-center text-sm ">
                                             <form action="pengaduan/destroy/{{ $p->id }}" method="post">
                                                 @csrf
@@ -146,72 +157,7 @@
             </div>
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Form Pengaduan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form role="form" action="{{ route('pengaduan.createOrUpdate') }}" method="post"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-body">
-                        {{-- <div class="mb-3">
-                            <label for="user_id" class="form-control-label">Nama</label>
-                            <input type="text" class="form-control" placeholder="Nama" name="user_id" aria-label="Name"
-                                id="user_id">
-                        </div> --}}
-                        {{-- <div class="form-group">
-                            <label for="tanggal_pengaduan" class="form-control-label">Tanggal</label>
-                            <input class="form-control" name="tanggal_pengaduan" type="datetime-local" value="2018-11-23T10:30:00"
-                                id="tanggal_pengaduan">
-                        </div> --}}
-                        <div class="form-group">
-                            <label for="isi_laporan">Isi Pengaduan</label>
-                            <textarea class="form-control" name="isi_laporan" id="isi_laporan" rows="3" required></textarea>
-                            @error('isi_laporan')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label class="custom-file-label" for="foto">Pilih Foto</label>
-                            <input type="file" name="image[]" class="form-control" id="foto" lang="en"
-                                required multiple>
-                            <label>*Maksimal foto adalah 5</label>
-                        </div>
-                        <textarea class="form-control" name="latitude" rows="1" id="latitude" hidden></textarea>
-                        <textarea class="form-control" name="longitude" rows="1" id="longitude" hidden></textarea>
-                        {{-- <input type="text" name="latitude" class="form-control" id="latitude" lang="en" />
-                        <input type="text" name="longitude" class="form-control" id="longitude" lang="en" /> --}}
 
-                        {{-- <div id="location"></div>
-                        <div id="latitude"></div>
-                        <div id="longitude"></div> --}}
-
-
-                        {{-- <div class="mb-3">
-                            <input type="text" name="status" class="form-control" placeholder="Name" value="Proses"
-                                aria-label="Status" id="status">
-                        </div> --}}
-                        {{-- <div class="text-center">
-                            <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Laporkan</button>
-                        </div> --}}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn bg-gradient-primary">Laporkan</button>
-                        <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Tutup</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 @section('script')
     <script>
         if (navigator.geolocation) {
@@ -223,10 +169,6 @@
         function showPosition(position) {
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
-            // var inputlatitude = latitude;
-            // var inputlongitude = longitude;
-            // var location = "Latitude: " + latitude + "<br>Longitude: " + longitude;
-            // document.getElementById("location").innerHTML = location;
             document.getElementById("latitude").innerHTML = latitude;
             document.getElementById("longitude").innerHTML = longitude;
         }
@@ -240,7 +182,6 @@
             event.preventDefault();
             swal({
                     title: `Apakah anda yakin ingin menghapus laporan ini?`,
-                    // text: "If you delete this, it will be gone forever.",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,

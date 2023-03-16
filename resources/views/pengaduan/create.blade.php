@@ -1,5 +1,6 @@
-@extends('layouts.user')
-@section('menu', 'pengaduan')
+@extends('layouts.app')
+@section('menu', 'laporan')
+@section('title', 'Laporan')
 
 @section('content')
     <div class="card z-index-0">
@@ -11,37 +12,88 @@
         <div class="card-body">
             <form role="form" action="{{ route('pengaduan.createOrUpdate') }}" method="post" enctype="multipart/form-data">
                 @csrf
-                {{-- <div class="mb-3">
-                    <label for="user_id" class="form-control-label">Nama</label>
-                    <input type="text" class="form-control" placeholder="Nama" name="user_id" aria-label="Name"
-                        id="user_id">
-                </div> --}}
-                {{-- <div class="form-group">
-                    <label for="tanggal_pengaduan" class="form-control-label">Tanggal</label>
-                    <input class="form-control" name="tanggal_pengaduan" type="datetime-local" value="2018-11-23T10:30:00"
-                        id="tanggal_pengaduan">
-                </div> --}}
-                <div class="form-group">
-                    <label for="isi_laporan">Isi Pengaduan</label>
-                    <textarea class="form-control" name="isi_laporan" id="isi_laporan" rows="3" required></textarea>
-                    @error('isi_laporan')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label class="custom-file-label" for="foto">Pilih Foto</label>
-                    <input type="file" name="foto" class="form-control" id="foto" lang="en" required>
-                </div>
-                {{-- <div class="mb-3">
-                    <input type="text" name="status" class="form-control" placeholder="Name" value="Proses"
-                        aria-label="Status" id="status">
-                </div> --}}
-                <div class="text-center">
-                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Laporkan</button>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="kategor" class="form-control-label">Kategori</label>
+                        <select id="kategori" class="form-control @error('kategori_id') is-invalid @enderror"
+                            name="kategori_id" required>
+                            <option value="">--Pilih Kategori--</option>
+                            @foreach ($kategori as $k)
+                                <option value="{{ $k->id }}">{{ $k->kategori }}</option>
+                            @endforeach
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+
+                        @error('kategori_id')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="isi_laporan">Isi Laporan</label>
+                        <textarea class="form-control @error('isi_laporan') is-invalid @enderror" name="isi_laporan" id="isi_laporan"
+                            rows="3" required>{{ old('isi_laporan') }}</textarea>
+                        @error('isi_laporan')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label class="custom-file-label" for="foto">Bukti Foto</label>
+                        <input type="file" name="image[]" class="form-control" id="foto" lang="en" required
+                            multiple>
+                        <label for="foto">*Maksimal foto adalah 5</label>
+                    </div>
+                    <textarea class="form-control" name="latitude" rows="1" id="latitude" hidden></textarea>
+                    <textarea class="form-control" name="longitude" rows="1" id="longitude" hidden></textarea>
+                    <div class="text-center">
+                        <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-0">Kirim Laporan</button>
+                    </div>
                 </div>
             </form>
+            <form action="{{ route('pengaduan') }}">
+                <button type="submit" class="btn bg-gradient-danger w-100 my-4 mb-2">Laporanku</button>
+            </form>
         </div>
+
     </div>
+
+@section('script')
+    <script>
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
+        }
+
+        function showPosition(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            document.getElementById("latitude").innerHTML = latitude;
+            document.getElementById("longitude").innerHTML = longitude;
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        $('.show_confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Apakah anda yakin ingin menghapus laporan ini?`,
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+    </script>
+@endsection
 @endsection

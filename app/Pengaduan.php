@@ -11,14 +11,19 @@ class Pengaduan extends Model
     protected $primaryKey = "id";
     protected $fillable = [
         'user_id',
+        'kategori_id',
         'tanggal_pengaduan',
+        'jam_pengaduan',
         'isi_laporan',
         'status',
         'latitude',
         'longitude',
     ];
 
-    protected $casts = [ 'tanggal_pengaduan'=>'datetime'];
+    protected $casts = [
+        'tanggal_pengaduan'=>'datetime',
+        'jam_pengaduan'=>'datetime',
+    ];
 
     public function tanggapan()
     {
@@ -28,6 +33,11 @@ class Pengaduan extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class);
     }
 
     public function image()

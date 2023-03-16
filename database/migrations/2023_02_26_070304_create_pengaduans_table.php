@@ -16,7 +16,9 @@ class CreatePengaduansTable extends Migration
         Schema::create('pengaduans', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id', 20);
-            $table->dateTime('tanggal_pengaduan');
+            $table->string('kategori_id', 20);
+            $table->date('tanggal_pengaduan');
+            $table->time('jam_pengaduan');
             $table->text('isi_laporan');
             // $table->string('foto', 255);
             $table->string('status', 255);

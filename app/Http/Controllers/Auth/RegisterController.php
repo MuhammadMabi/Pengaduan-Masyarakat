@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Models\Province;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class RegisterController extends Controller
 {
@@ -52,7 +54,6 @@ class RegisterController extends Controller
             'nama' => ['required', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email', 'max:255'],
             'password' => ['required', 'min:5', 'max:255'],
-            // 'confirmpassword' => ['required', 'min:5', 'max:255', 'same:password'],
             'telp' => ['required', 'max:20'],
             'jenis_kelamin' => ['required'],
             'role' => ['required'],
@@ -66,25 +67,6 @@ class RegisterController extends Controller
             'district_id' => ['required'],
             'village_id' => ['required'],
         ]);
-
-        // return Validator::make($data, [
-        //     'nik' => ['required', 'string', 'max:20', 'unique:users'],
-        //     'nama' => ['required', 'string', 'max:255'],
-        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        //     'password' => ['required', 'string', 'min:5', 'confirmed'],
-        //     'telp' => ['required', 'integer', 'max:20'],
-        //     'jenis_kelamin' => ['required', 'string', 'max:150'],
-        //     'role' => ['required', 'string', 'max:150'],
-        //     'tanggal_lahir' => ['required', 'date'],
-        //     'alamat' => ['required', 'text'],
-        //     'rt' => ['required', 'string', 'max:50'],
-        //     'rw' => ['required', 'string', 'max:50'],
-        //     'kode_pos' => ['required', 'string', 'max:50'],
-        //     'province_id' => ['required', 'string', 'max:50'],
-        //     'regency_id' => ['required', 'string', 'max:50'],
-        //     'district_id' => ['required', 'string', 'max:50'],
-        //     'village_id' => ['required', 'string', 'max:50'],
-        // ]);
     }
 
     /**
@@ -95,14 +77,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        
-        // $nik = User::where('nik', $data['nik'])->first();
-        // // dd($nik != null);
-        // if ($nik != null) {
-        //     return response('123');
-        // }
-        
-        return User::create([
+        return $user = User::create([
             'nik' => $data['nik'],
             'nama' => $data['nama'],
             'email' => $data['email'],
@@ -120,5 +95,9 @@ class RegisterController extends Controller
             'district_id' => $data['district_id'],
             'village_id' => $data['village_id'],
         ]);
+
+        event(new Registered($user));
+
+        // Auth::login($user);
     }
 }
