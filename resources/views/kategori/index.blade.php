@@ -13,6 +13,10 @@
         .btnmdl {
             margin-left: 10px;
         }
+        
+        #btntambah {
+            float: right;
+        }
     </style>
 @endsection
 
@@ -30,9 +34,9 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
-                <div class="card-header pb-0">
+                <div class="card-header text-center pb-0">
                     <h6 class="float-inline">Kategori</h6>
-                        <button type="button" class="btn bg-gradient-primary float-inline btn-sm btnmdl"
+                        <button id="btntambah" type="button" class="btn bg-gradient-primary float-inline btn-sm btnmdl"
                             data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Tambah
                         </button>
@@ -106,7 +110,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Form Kategori</h5>
+                    <h6 class="modal-title" id="exampleModalLabel">Form Kategori</h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

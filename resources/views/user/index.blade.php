@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('menu', 'user')
-@section('title','User')
+@section('title', 'User')
 
 @section('content')
     @if (isset($message))
@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
-                <div class="card-header pb-0">
+                <div class="card-header text-center pb-0">
                     <h6>Data User</h6>
                 </div>
                 <div class="card-body">
@@ -110,13 +110,15 @@
                                                         Detail
                                                     </a>
                                                 </button>
-                                                <button
-                                                    class="text-secondary font-weight-bold text-xs btndelete show_confirm"
-                                                    data-toggle="tooltip" data-original-title="Edit user"
-                                                    style="border: none; background: none;" type="submit"
-                                                    data-toggle="tooltip" title='Delete'>
-                                                    Hapus
-                                                </button>
+                                                @if (auth()->user()->role == 'Admin')
+                                                    <button
+                                                        class="text-secondary font-weight-bold text-xs btndelete show_confirm"
+                                                        data-toggle="tooltip" data-original-title="Edit user"
+                                                        style="border: none; background: none;" type="submit"
+                                                        data-toggle="tooltip" title='Delete'>
+                                                        Hapus
+                                                    </button>
+                                                @endif
 
                                                 <input type="hidden" class="delete_id" value="{{ $u->id }}">
 

@@ -1,15 +1,13 @@
 @extends('layouts.app')
-@section('title','Change Password')
+@section('title', 'Change Password')
 
 @section('content')
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header pb-0">
-                        <div class="d-flex align-items-center">
-                            <h6 class="float-inline">Change Password</h6>
-                        </div>
+                    <div class="card-header text-center pb-0">
+                        <h6 class="float-inline">Change Password</h6>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('changepassword') }}">
@@ -47,8 +45,9 @@
                                 <div class="form-group">
                                     <label for="example-text-input" class="form-control-label">Confirm Password Baru</label>
                                     <input id="confirm_new_password" type="password"
-                                        class="form-control @error('confirm_new_password') is-invalid @enderror"  value="{{ old('confirm_new_password') }}"
-                                        name="confirm_new_password" required autocomplete="confirm_new_password" autofocus>
+                                        class="form-control @error('confirm_new_password') is-invalid @enderror"
+                                        value="{{ old('confirm_new_password') }}" name="confirm_new_password" required
+                                        autocomplete="confirm_new_password" autofocus>
 
                                     @error('confirm_new_password')
                                         <span class="invalid-feedback" role="alert">

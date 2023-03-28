@@ -1,16 +1,13 @@
 @extends('layouts.app')
-@section('title','Profile')
+@section('title', 'Profile')
 
 @section('content')
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header pb-0">
-                        <div class="d-flex align-items-center">
-                            <h6 class="float-inline">Profile</h6>
-                            {{-- <button class="btn btn-primary btn-sm ms-auto">Settings</button> --}}
-                        </div>
+                    <div class="card-header text-center pb-0">
+                        <h6 class="float-inline">Profile</h6>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="updateprofile/{{ auth()->user()->id }}">
@@ -102,16 +99,14 @@
                                             @if (auth()->user()->jenis_kelamin == 'Laki-laki')
                                                 <input class="@error('jenis_kelamin') is-invalid @enderror" type="radio"
                                                     id="Laki-laki" name="jenis_kelamin" value="Laki-laki" checked />
-                                                <label for="Laki-laki">Laki_laki</label>
+                                                <label for="Laki-laki">Laki-laki</label>
                                                 <input class="@error('jenis_kelamin') is-invalid @enderror ml-3"
                                                     type="radio" id="Perempuan" name="jenis_kelamin" value="Perempuan" />
                                                 <label for="Perempuan">Perempuan</label>
-                                            @endif
-
-                                            @if (auth()->user()->jenis_kelamin == 'Perempuan')
+                                            @elseif (auth()->user()->jenis_kelamin == 'Perempuan')
                                                 <input class="@error('jenis_kelamin') is-invalid @enderror" type="radio"
                                                     id="Laki-laki" name="jenis_kelamin" value="Laki-laki" />
-                                                <label for="Laki-laki">Laki_laki</label>
+                                                <label for="Laki-laki">Laki-laki</label>
                                                 <input class="@error('jenis_kelamin') is-invalid @enderror ml-3"
                                                     type="radio" id="Perempuan" name="jenis_kelamin" value="Perempuan"
                                                     checked />
@@ -279,11 +274,12 @@
                                 </div>
                             </div>
                         </form>
-                        <form method="post" action="hapusakun/{{ auth()->user()->id }}">
+                        <form method="post" action="/hapusakun/{{ auth()->user()->id }}">
                             @csrf
                             @method('delete')
 
-                            <button class="btn bg-gradient-dark w-100 my-4 mb-0 btndelete show_confirm" type="submit" data-toggle="tooltip" title='Delete'>Hapus Akun Anda</button>
+                            <button class="btn bg-gradient-dark w-100 my-4 mb-0 btndelete show_confirm" type="submit"
+                                data-toggle="tooltip" title='Delete'>Hapus Akun Anda</button>
                         </form>
                         <form action="{{ route('dashboard') }}">
                             <button class="btn bg-gradient-danger w-100 my-4 mb-2">Kembali</button>
@@ -294,7 +290,7 @@
             <div class="col-md-4">
                 <div class="card card-profile">
                     <div class="card-body pt-0 mt-3">
-                        <div class="text-center mt-4">
+                        <div class="text-center mt-2">
                             <h5>
                                 {{ auth()->user()->nama }}<span class="font-weight-light"></span>
                             </h5>
@@ -309,41 +305,42 @@
                                     {{ auth()->user()->province->name }}</span>
                                 <i class="ni location_pin mr-2"></i>
                             </div>
-                            <div class="h6 mt-4">
-                                {{-- <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer --}}
-                            </div>
-                            <div>
-                                {{-- <i class="ni education_hat mr-2"></i>University of Computer Science --}}
-                            </div>
                         </div>
                         <hr class="horizontal dark mt-0">
                         <div class="row">
                             <div class="col">
-                                <div class="d-grid text-center mb-3">
-                                    <span class="text-lg font-weight-bolder">{{ $laporan }}</span>
-                                    <span class="text-lg font-weight-bolder">Laporan</span>
-                                </div>
-                                <div class="d-flex justify-content-center">
-                                    <div class="d-grid text-center">
-                                        <span class="text-lg font-weight-bolder">{{ $pending }}</span>
-                                        <span class="text-sm opacity-8">Pending</span>
+                                @if (auth()->user()->role == 'Warga')
+                                    <div class="d-grid text-center mb-3">
+                                        <span class="text-lg font-weight-bolder">{{ $laporan }}</span>
+                                        <span class="text-lg font-weight-bolder">Laporan</span>
                                     </div>
-                                    <div class="d-grid text-center mx-4">
-                                        <span class="text-lg font-weight-bolder">{{ $proses }}</span>
-                                        <span class="text-sm opacity-8">Proses</span>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="d-grid text-center">
+                                            <span class="text-lg font-weight-bolder">{{ $pending }}</span>
+                                            <span class="text-sm opacity-8">Pending</span>
+                                        </div>
+                                        <div class="d-grid text-center mx-4">
+                                            <span class="text-lg font-weight-bolder">{{ $proses }}</span>
+                                            <span class="text-sm opacity-8">Proses</span>
+                                        </div>
+                                        <div class="d-grid text-center">
+                                            <span class="text-lg font-weight-bolder">{{ $selesai }}</span>
+                                            <span class="text-sm opacity-8">Selesai</span>
+                                        </div>
                                     </div>
-                                    <div class="d-grid text-center">
-                                        <span class="text-lg font-weight-bolder">{{ $selesai }}</span>
-                                        <span class="text-sm opacity-8">Selesai</span>
+                                @else
+                                    <div class="d-grid text-center mb-3">
+                                        <span class="text-lg font-weight-bolder">{{ $tanggapan }}</span>
+                                        <span class="text-lg font-weight-bolder">Menanggapi</span>
                                     </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        @section('script')
+    @section('script')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
         <script type="text/javascript">
             $('.show_confirm').click(function(event) {
@@ -364,4 +361,4 @@
             });
         </script>
     @endsection
-    @endsection
+@endsection

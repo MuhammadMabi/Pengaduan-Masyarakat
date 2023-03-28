@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class PengaduanController extends Controller
@@ -39,11 +40,16 @@ class PengaduanController extends Controller
 
     public function createOrUpdate(Request $request)
     {
+        $allowedfileExtension = ['image/jpg', 'image/jpeg', 'image/png'];
         $pengaduan = Pengaduan::where('id', $request->id)->first();
-
         $mytime = Carbon::now();
 
         if ($pengaduan) {
+
+            $this->validate($request, [
+                'kategori_id' => 'required',
+                'isi_laporan' => 'required',
+            ]);
 
             Alert::success('Berhasil Memperbarui Laporan');
 
@@ -56,13 +62,13 @@ class PengaduanController extends Controller
             return redirect()->route('pengaduan');
         } else {
 
-            $table = DB::select("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'pengaduan_masyarakat' AND TABLE_NAME = 'pengaduans'");
-
             $this->validate($request, [
                 'kategori_id' => 'required',
                 'isi_laporan' => 'required',
-                'image' => 'required', 'mimes:doc,docx,PDF,pdf,jpg,jpeg,png', 'max:255',
+                'image' => 'required|max:255',
             ]);
+
+            $table = DB::select("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'pengaduan-masyarakat-mabi' AND TABLE_NAME = 'pengaduans'");
 
             $maxfoto = $request->file('image');
 
@@ -74,10 +80,18 @@ class PengaduanController extends Controller
                         $imgName = $file->getClientOriginalName() . '-' . time() . '.' . $file->extension();
                         $file->move(public_path('image'), $imgName);
 
-                        Image::insert([
-                            'pengaduan_id' => $table[0]->AUTO_INCREMENT,
-                            'image' => $imgName,
-                        ]);
+                        $extension = $file->getClientMimeType();
+                        $check = in_array($extension, $allowedfileExtension);
+
+                        if ($check) {
+                            Image::insert([
+                                'pengaduan_id' => $table[0]->AUTO_INCREMENT,
+                                'image' => $imgName,
+                            ]);
+                        } else {
+                            Alert::error('Gambar harus berupa file dengan tipe: png, jpg dan jpeg!');
+                            return back();
+                        }
                     }
                 }
 
@@ -105,13 +119,16 @@ class PengaduanController extends Controller
 
     public function uploadimage(Request $request)
     {
+        // dd($request->image);
         $this->validate($request, [
-            'image' => 'required', 'mimes:doc,docx,PDF,pdf,jpg,jpeg,png', 'max:255',
+            'image' => 'required|max:255',
         ]);
 
         $reqfoto = $request->file('image');
         $oldfoto = Image::where('pengaduan_id', $request->pengaduan_id)->count();
         $maxfoto = count($reqfoto) + $oldfoto <= 5;
+
+        $allowedfileExtension = ['image/jpg', 'image/jpeg', 'image/png'];
 
         if ($maxfoto) {
 
@@ -121,14 +138,23 @@ class PengaduanController extends Controller
                     $imgName = $file->getClientOriginalName() . '-' . time() . '.' . $file->extension();
                     $file->move(public_path('image'), $imgName);
 
-                    Image::insert([
-                        'pengaduan_id' => $request->pengaduan_id,
-                        'image' => $imgName,
-                    ]);
+                    // dd($file->getClientMimeType());
+                    $extension = $file->getClientMimeType();
+                    $check = in_array($extension, $allowedfileExtension);
+
+                    if ($check) {
+                        Image::insert([
+                            'pengaduan_id' => $request->pengaduan_id,
+                            'image' => $imgName,
+                        ]);
+                        Alert::success('Berhasil Menambahkan Foto');
+
+                        return back();
+                    } else {
+                        Alert::error('Gambar harus berupa file dengan tipe: png, jpg dan jpeg!');
+                    }
                 }
             }
-
-            Alert::success('Berhasil Menambahkan Foto');
 
             return back();
         } else {
@@ -146,6 +172,21 @@ class PengaduanController extends Controller
         $mytime = Carbon::now()->format('d/m/Y');
 
         return view('pengaduan.show', compact('pengaduan', 'mytime', 'image', 'tanggapan'));
+    }
+
+
+    public function cetak($id)
+    {
+        $pengaduan = Pengaduan::where('id', $id)->first();
+        $tanggapan = Tanggapan::where('pengaduan_id', $id)->first();
+        $image = Image::where('pengaduan_id', $id)->get();
+        $mytime = Carbon::now()->format('d/m/Y');
+
+        return view('pengaduan.show-cetak', compact('pengaduan', 'mytime', 'image', 'tanggapan'));
+        // $pdf = \PDF::loadView('pengaduan.show-cetak', compact('pengaduan', 'mytime', 'image', 'tanggapan'));
+
+        // return $pdf->download('document.pdf');
+
     }
 
 
@@ -205,17 +246,17 @@ class PengaduanController extends Controller
 
     public function cetakpdf($tanggal_awal, $tanggal_akhir)
     {
-        $cetak = Pengaduan::whereBetween('tanggal_pengaduan', array($tanggal_awal, $tanggal_akhir))->get();
+        $pengaduan = Pengaduan::whereBetween('tanggal_pengaduan', array($tanggal_awal, $tanggal_akhir))->get();
 
-        if (auth()->user()->role == 'Warga') {
-            $pengaduan = $cetak->where('user_id', auth()->user()->id);
+        if ($pengaduan->all() != null) {
+
+            $pdf = \PDF::loadView('pengaduan.cetak-pengaduan', compact('pengaduan', 'tanggal_awal', 'tanggal_akhir'));
+
+            return $pdf->download('document.pdf');
+            // return $pdf->stream('document.pdf');
         } else {
-            $pengaduan = $cetak;
+            Alert::error('Tidak ada data untuk di cetak!');
+            return back();
         }
-
-        $pdf = \PDF::loadView('pengaduan.cetak-pengaduan', compact('pengaduan', 'tanggal_awal', 'tanggal_akhir'))->setPaper('a4');
-
-        // return $pdf->download('document.pdf');
-        return $pdf->stream('document.pdf');
     }
 }

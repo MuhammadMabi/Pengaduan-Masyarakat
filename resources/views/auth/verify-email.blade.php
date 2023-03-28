@@ -28,16 +28,29 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-md-8">
-                                <div class=" position-relative bg-gradient-primary h-100 m-3 px-10 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
-                                    style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg');
+                            <div class=" position-relative bg-gradient-primary h-100 m-3 px-10 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
+                                style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg');
           background-size: cover;">
-                                    <span class="mask bg-gradient-primary opacity-6"></span>
-                                    <h4 class="mt-5 text-white font-weight-bolder position-relative">"Tautan verifikasi
-                                        baru telah dikirim ke alamat email Anda"</h4>
-                                    <p class="text-white position-relative">Sebelum melanjutkan, periksa email Anda
-                                        untuk tautan verifikasi.</p>
-                                </div>
-                            {{-- </div> --}}
+                                <span class="mask bg-gradient-primary opacity-6"></span>
+                                <h4 class="mt-5 text-white font-weight-bolder position-relative">"Tautan verifikasi
+                                    baru telah dikirim ke alamat email Anda"</h4>
+                                <p class="text-white position-relative">Sebelum melanjutkan, periksa email Anda
+                                    untuk tautan verifikasi.</p>
+
+                            </div>
+
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn bg-gradient-primary w-100 my-2 mb-0">Logout</button>
+                            </form>
+
+                            {{-- <form method="post" action="/hapusakun/{{ auth()->user()->id }}">
+                                @csrf
+                                @method('delete')
+
+                                <button class="btn bg-gradient-dark w-100 my-4 mb-0 btndelete show_confirm"
+                                    type="submit" data-toggle="tooltip" title='Delete'>Hapus Akun Anda</button>
+                            </form> --}}
                         </div>
                     </div>
                 </div>
@@ -62,6 +75,25 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        $('.show_confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Apakah anda yakin ingin menghapus akun ini?`,
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+    </script>
 </body>
 
 </html>

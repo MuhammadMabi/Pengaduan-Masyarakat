@@ -5,7 +5,7 @@
 @section('content')
     <div class="card z-index-0">
         <div class="card-header text-center pt-4">
-            <h5>Edit Kategori</h5>
+            <h6>Edit Kategori</h6>
         </div>
         <div class="row px-xl-5 px-sm-4 px-3">
         </div>

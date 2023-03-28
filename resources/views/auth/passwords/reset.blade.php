@@ -4,8 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="../../assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="../../assets/img/favicon.png">
+    <link rel="icon" type="image/jpg" href="https://t4.ftcdn.net/jpg/04/00/48/17/360_F_400481724_qMAZNHULrqzhKq2BeG4dWbRp8n9WoGHV.jpg">
+    {{-- <link rel="apple-touch-icon" sizes="76x76" href="../../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../../assets/img/favicon.png"> --}}
     <title>
         Reset Password - Pengaduan Masyarakat
     </title>

@@ -21,21 +21,22 @@ class AuthController extends Controller
     public function profile()
     {
         $auth = auth()->user();
-        $lahir = $auth->tanggal_lahir->format('Y');
+        $lahir = $auth->tanggal_lahir;
         $mytime = Carbon::now()->format('Y');
 
-        $umur = $mytime - $lahir;
+        $umur = Carbon::parse($lahir)->age;
         $province = Province::all();
         $regency = Regency::where('province_id', $auth->province_id)->get();
         $district = District::where('regency_id', $auth->regency_id)->get();
         $village = Village::where('district_id', $auth->district_id)->get();
 
+        $tanggapan = Tanggapan::where('user_id', auth()->user()->id)->count();
         $laporan = Pengaduan::where('user_id', auth()->user()->id)->count();
         $pending = Pengaduan::where('user_id', auth()->user()->id)->where('status', 'Pending')->count();
         $proses = Pengaduan::where('user_id', auth()->user()->id)->where('status', 'Proses')->count();
         $selesai = Pengaduan::where('user_id', auth()->user()->id)->where('status', 'Selesai')->count();
 
-        return view('profile.profile', compact('province', 'regency', 'district', 'village', 'laporan', 'pending', 'proses', 'selesai', 'umur'));
+        return view('profile.profile', compact('province', 'regency', 'district', 'village', 'tanggapan', 'laporan', 'pending', 'proses', 'selesai', 'umur'));
     }
 
     

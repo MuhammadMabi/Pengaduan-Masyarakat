@@ -14,7 +14,7 @@ class Admin
             return $next($request);
         }else{
             Alert::warning('Anda Tidak Berhak Mengakses Halaman Ini');
-            return redirect('dashboard');
+            return redirect()->back();
         }
     } 
 }

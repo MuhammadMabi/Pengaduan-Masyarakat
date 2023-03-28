@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="icon" type="image/png" href="https://t4.ftcdn.net/jpg/04/00/48/17/360_F_400481724_qMAZNHULrqzhKq2BeG4dWbRp8n9WoGHV.jpg">
     <title>
         Register - Pengaduan Masyarakat
     </title>
@@ -204,7 +204,7 @@
                                                 <input class="@error('jenis_kelamin') is-invalid @enderror"
                                                     type="radio" id="Laki-laki" name="jenis_kelamin"
                                                     value="Laki-laki" checked />
-                                                <label for="Laki-laki">Laki_laki</label>
+                                                <label for="Laki-laki">Laki-laki</label>
 
                                                 <input class="@error('jenis_kelamin') is-invalid @enderror ml-3"
                                                     type="radio" id="Perempuan" name="jenis_kelamin"
@@ -286,14 +286,14 @@
                                                 class="form-control-label">Provinsi</label>
                                             <select id="provinsi"
                                                 class="form-control @error('province_id') is-invalid @enderror"
-                                                name="province_id">
+                                                name="province_id" required>
                                                 <option value="">--Pilih Provinsi--</option>
                                                 @foreach ($province as $p)
-                                                    @if (old('province_id') == $p->id)
+                                                    {{-- @if (old('province_id') == $p->id)
                                                         <option value="{{ $p->id }}" selected>
                                                             {{ $p->name }}
                                                         </option>
-                                                    @endif
+                                                    @endif --}}
                                                     <option value="{{ $p->id }}">{{ $p->name }}</option>
                                                 @endforeach
                                             </select>
@@ -311,7 +311,14 @@
                                                 class="form-control-label">Kabupaten/Kota</label>
                                             <select id="kabupaten"
                                                 class="form-control @error('regency_id') is-invalid @enderror"
-                                                name="regency_id">
+                                                name="regency_id" required>
+                                                @foreach ($regency as $r)
+                                                    @if (old('regency_id') == $r->id)
+                                                        <option value="{{ $r->id }}" selected>{{ $r->name }}
+                                                        </option>
+                                                    @endif
+                                                    <option value="{{ $r->id }}">{{ $r->name }}</option>
+                                                @endforeach
                                             </select>
 
                                             @error('regency_id')
@@ -327,7 +334,14 @@
                                                 class="form-control-label">Kecamatan</label>
                                             <select id="kecamatan"
                                                 class="form-control @error('district_id') is-invalid @enderror"
-                                                name="district_id">
+                                                name="district_id" required>
+                                                @foreach ($district as $d)
+                                                    @if (old('district_id') == $d->id)
+                                                        <option value="{{ $d->id }}" selected>{{ $d->name }}
+                                                        </option>
+                                                    @endif
+                                                    <option value="{{ $d->id }}">{{ $d->name }}</option>
+                                                @endforeach
                                             </select>
 
                                             @error('district_id')
@@ -342,7 +356,14 @@
                                             <label for="example-text-input" class="form-control-label">Desa</label>
                                             <select id="desa"
                                                 class="form-control @error('village_id') is-invalid @enderror"
-                                                name="village_id">
+                                                name="village_id" required>
+                                                @foreach ($village as $v)
+                                                    @if (old('village_id') == $v->id)
+                                                        <option value="{{ $v->id }}" selected>{{ $v->name }}
+                                                        </option>
+                                                    @endif
+                                                    <option value="{{ $v->id }}">{{ $v->name }}</option>
+                                                @endforeach
                                             </select>
 
                                             @error('village_id')
@@ -356,7 +377,7 @@
 
                                 <div class="form-group row mb-0">
                                     <div class="text-center">
-                                        <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign
+                                        <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2" >Sign
                                             up</button>
                                         <p class="text-sm mt-3 mb-0">Already have an account? <a href="login"
                                                 class="text-dark font-weight-bolder">Sign in</a></p>

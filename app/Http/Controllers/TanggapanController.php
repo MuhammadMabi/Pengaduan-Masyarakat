@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Http\Controllers\Controller;
+use App\Mail\TanggapanEmail;
+use Illuminate\Support\Facades\Mail;
 
 class TanggapanController extends Controller
 {
@@ -15,11 +18,11 @@ class TanggapanController extends Controller
     public function createOrUpdate(Request $request)
     {
         $pengaduan = Pengaduan::where('id', $request->pengaduan_id)->first();
+        // dd($pengaduan->user->email);
 
         $tanggapan = Tanggapan::where('pengaduan_id', $request->pengaduan_id)->first();
         
         $request['tanggal_tanggapan'] = Carbon::now();
-        // dd($pengaduan->id, $tanggapan->id);
 
         $this->validate($request, [
             'pengaduan_id' => 'required',
@@ -36,7 +39,8 @@ class TanggapanController extends Controller
 
 
             $tanggapan->update($request->all());
-
+            
+            Mail::to($pengaduan->user->email)->send(new TanggapanEmail());
             return redirect()->back();
         }else {
 
@@ -50,6 +54,7 @@ class TanggapanController extends Controller
 
             Tanggapan::create($request->all());
 
+            Mail::to($pengaduan->user->email)->send(new TanggapanEmail());
             return redirect()->back();
         }
 

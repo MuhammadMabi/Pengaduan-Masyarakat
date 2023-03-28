@@ -19,6 +19,7 @@
 <body>
     <h3 align="center"><b>Pengaduan Masyarakat</b></h3>
     <p align="center">Dari tanggal {{ $tanggal_awal }} sampai tanggal {{ $tanggal_akhir }}</p>
+    {{-- <hr> --}}
     <table class="static" align="center" rules="all" border="1px" style="width: 95%;" cellpadding="5"
         cellspacing="0">
         <thead>

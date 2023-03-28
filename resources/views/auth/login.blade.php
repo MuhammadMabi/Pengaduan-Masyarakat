@@ -5,7 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="icon" type="image/png"
+        href="https://t4.ftcdn.net/jpg/04/00/48/17/360_F_400481724_qMAZNHULrqzhKq2BeG4dWbRp8n9WoGHV.jpg">
     <title>
         Login - Pengaduan Masyarakat
     </title>
@@ -94,10 +95,12 @@
                                             @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <input type="password"
+                                            <input type="password" id="password"
                                                 class="form-control form-control-lg  @error('password') is-invalid @enderror"
                                                 placeholder="Password" aria-label="Password" name="password" required
                                                 autocomplete="current-password">
+                                            {{-- <input type="checkbox" onclick="myFunction()" id="show" class="mt-3"><label
+                                                for="show">Show Password</label> --}}
 
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
@@ -105,11 +108,11 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                        <div class="form-check form-switch">
+                                        {{-- <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="rememberMe"
                                                 name="remember" {{ old('remember') ? 'checked' : '' }}>
                                             <label class="form-check-label" for="rememberMe">Remember me</label>
-                                        </div>
+                                        </div> --}}
                                         <div class="text-center">
                                             <button type="submit"
                                                 class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
@@ -160,6 +163,16 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
 </body>
 
 </html>

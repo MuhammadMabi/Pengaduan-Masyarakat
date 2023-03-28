@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Cetak Laporan')
+@section('title', 'Cetak Laporan')
 
 @section('content')
     @if (isset($message))
@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
-                <div class="card-header pb-0">
+                <div class="card-header text-center pb-0">
                     <h6>Cetak Laporan</h6>
                 </div>
                 <div class="card-body">
@@ -25,7 +25,8 @@
                                 <label for="example-text-input" class="form-control-label">Tanggal Awal</label>
                                 <input id="tanggal_awal" type="date"
                                     class="form-control @error('tanggal_awal') is-invalid @enderror" name="tanggal_awal"
-                                    value="{{ $mytime }}" required autocomplete="tanggal_awal" min="2020-12-31" max="2030-12-31" autofocus>
+                                    value="{{ $mytime }}" required autocomplete="tanggal_awal" min="2020-12-31"
+                                    max="2030-12-31" autofocus>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -33,10 +34,13 @@
                                 <label for="example-text-input" class="form-control-label">Tanggal Akhir</label>
                                 <input id="tanggal_akhir" type="date"
                                     class="form-control @error('tanggal_akhir') is-invalid @enderror" name="tanggal_akhir"
-                                    value="{{ $mytime }}" required autocomplete="tanggal_akhir" min="2020-12-31" max="2030-12-31" autofocus>
+                                    value="{{ $mytime }}" required autocomplete="tanggal_akhir" min="2020-12-31"
+                                    max="2030-12-31" autofocus>
                             </div>
                         </div>
-                        <a type="submit" target="_blank" onclick="this.href='cetakpdf/'+ document.getElementById('tanggal_awal').value + '/' + document.getElementById('tanggal_akhir').value" class="btn bg-gradient-primary w-100 my-4 mb-2">Cetak Laporan</a>
+                        <a type="submit"
+                            onclick="this.href='cetakpdf/'+ document.getElementById('tanggal_awal').value + '/' + document.getElementById('tanggal_akhir').value"
+                            class="btn bg-gradient-primary w-100 my-4 mb-2">Cetak Laporan</a>
                     </div>
                 </div>
             </div>

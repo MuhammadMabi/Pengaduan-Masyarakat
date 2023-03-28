@@ -16,12 +16,13 @@ use RealRashid\SweetAlert\Facades\Alert;
 |
 */
 
-Route::middleware(['guest'])->group(function () {
-});
-
 Route::get('/', function () {
     return view('landingpage');
 })->middleware('guest')->name('landingpage');
+
+Route::get('/tes', function () {
+    return view('email-tanggapan');
+});
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
@@ -29,7 +30,6 @@ Route::get('/email/verify', function () {
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
- 
     return redirect('/verify-user');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
@@ -45,6 +45,8 @@ Route::post('getkabupaten', 'IndoRegionController@getkabupaten')->name('getkabup
 Route::post('getkecamatan', 'IndoRegionController@getkecamatan')->name('getkecamatan');
 Route::post('getdesa', 'IndoRegionController@getdesa')->name('getdesa');
 
+Route::delete('hapusakun/{id}', 'AuthController@destroy')->name('hapus.akun');
+
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // Dashboard
@@ -55,13 +57,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('changepassword', 'AuthController@index')->name('changepassword');
     Route::post('changepassword', 'AuthController@changePassword')->name('changepassword');
     Route::put('updateprofile/{id}', 'AuthController@update')->name('update.profile');
-    Route::delete('hapusakun/{id}', 'AuthController@destroy')->name('hapus.akun');
     
 
     // Pengaduan
     Route::prefix('pengaduan')->group(function () {
         Route::get('', 'PengaduanController@index')->name('pengaduan');
         Route::get('show/{id}', 'PengaduanController@show')->name('pengaduan.show');
+        Route::get('cetak/{id}', 'PengaduanController@cetak')->name('pengaduan.cetak');
         Route::delete('destroy/{id}', 'PengaduanController@destroy');
 
         Route::middleware(['warga'])->group(function () {
@@ -98,10 +100,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/destroy/{id}', 'UserController@destroy');
         });
     
+    });
+
+    Route::middleware(['admin'])->group(function () {
+
         // Cetak Laporan
         Route::get('/laporan', 'PengaduanController@cetakPengaduan')->name('cetak');
         Route::get('/cetakpdf/{tanggal_awal}/{tanggal_akhir}', 'PengaduanController@cetakpdf')->name('cetak.pengaduan');
-
     });
 
 });

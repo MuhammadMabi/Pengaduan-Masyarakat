@@ -20,8 +20,7 @@ class CreatePengaduansTable extends Migration
             $table->date('tanggal_pengaduan');
             $table->time('jam_pengaduan');
             $table->text('isi_laporan');
-            // $table->string('foto', 255);
-            $table->string('status', 255);
+            $table->enum('status', ['Pending', 'Ditolak', 'Proses', 'Selesai']);
             $table->string('latitude', 255)->nullable();
             $table->string('longitude', 255)->nullable();
             $table->timestamps();

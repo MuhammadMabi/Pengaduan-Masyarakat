@@ -158,7 +158,7 @@
                                                     @endforeach
                                                 </div>
 
-                                                @if (auth()->user()->role == 'Warga')
+                                                @if (auth()->user()->role == 'Warga' && $pengaduan->status != 'Selesai')
                                                     <form role="form" method="post"
                                                         action="{{ route('upload.image') }}" enctype="multipart/form-data">
                                                         @csrf
@@ -167,10 +167,15 @@
                                                             name="pengaduan_id" hidden>
                                                         <div class="input-group mt-3">
                                                             <input type="file" name="image[]" id="foto"
-                                                                class="form-control" aria-label="Recipient's username"
+                                                                class="form-control @error('image') is-invalid @enderror" aria-label="Recipient's username"
                                                                 aria-describedby="button-addon2" required multiple>
                                                             <button class="btn bg-gradient-primary mb-0" type="submit"
                                                                 id="button-addon2">Upload</button>
+                                                                @error('image')
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $message }}</strong>
+                                                                    </span>
+                                                                @enderror
                                                         </div>
                                                         <label>*Maksimal foto adalah 5</label>
                                                     </form>
@@ -186,7 +191,7 @@
                 </div>
             </div>
 
-            @if (auth()->user()->role == 'Warga')
+            @if (auth()->user()->role != 'Petugas')
                 <div class="card mb-4">
                     <div class="card-header text-center pb-0">
                         <h6>Tanggapan Petugas</h6>
@@ -254,15 +259,15 @@
                                 </tr>
                             </tbody>
                         </table>
-                        @if (auth()->user()->role == 'Warga')
+                        @if (auth()->user()->role != 'Petugas')
                             <form action="{{ route('pengaduan') }}">
+                                <a href="/pengaduan/cetak/{{ $pengaduan->id }}" target="_blank" class="btn bg-gradient-success w-100 my-4 mb-0">Cetak PDF</a>
                                 <button type="submit" class="btn bg-gradient-danger w-100 my-4 mb-2">Kembali</button>
                             </form>
                         @endif
                     </div>
                 </div>
-            @endif
-            @if (auth()->user()->role != 'Warga')
+            @elseif (auth()->user()->role == 'Petugas')
                 <div class="card mb-4">
                     <div class="card-header text-center pb-0">
                         <h6>Tanggapan Petugas</h6>
@@ -331,6 +336,7 @@
                             </div>
                         </form>
                         <form action="{{ route('pengaduan') }}">
+                            <a href="/pengaduan/cetak/{{ $pengaduan->id }}" target="_blank" class="btn bg-gradient-success w-100 my-4 mb-0">Cetak PDF</a>
                             <button type="submit" class="btn bg-gradient-danger w-100 my-4 mb-2">Kembali</button>
                         </form>
                     </div>
@@ -350,7 +356,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn bg-gradient-secondary"
                                 data-bs-dismiss="modal">Close</button>
-                            @if (auth()->user()->role == 'Warga')
+                            @if (auth()->user()->role == 'Warga' && $pengaduan->status != 'Selesai')
                                 <form method="post" id="deleteImage">
                                     @csrf
                                     @method('delete')

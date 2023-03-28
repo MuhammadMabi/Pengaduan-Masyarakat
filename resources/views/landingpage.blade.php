@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
         rel="stylesheet">
+        <link rel="icon" type="image/png" href="https://t4.ftcdn.net/jpg/04/00/48/17/360_F_400481724_qMAZNHULrqzhKq2BeG4dWbRp8n9WoGHV.jpg">
 
     <title>Pengaduan Masyarakat</title>
 

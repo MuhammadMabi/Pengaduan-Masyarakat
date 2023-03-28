@@ -21,8 +21,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 255);
             $table->string('telp', 20);
-            $table->string('jenis_kelamin', 150);
-            $table->string('role', 150);
+            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+            $table->enum('role', ['Admin', 'Petugas', 'Warga']);
             $table->date('tanggal_lahir');
             $table->text('alamat');
             $table->string('rt', 50);

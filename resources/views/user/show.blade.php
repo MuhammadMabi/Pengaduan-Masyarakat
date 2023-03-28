@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header pb-0">
+                <div class="card-header text-center pb-0">
                     <h6>Detail User</h6>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
@@ -14,23 +14,6 @@
                         <table class="table align-items-center mb-0">
                             <tbody>
                                 @foreach ($user as $i => $u)
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-3 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <p class="text-xs font-weight-bold mb-0">ID User</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $u->id }}</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                    </tr>
                                     <tr>
                                         <td>
                                             <div class="d-flex px-3 py-1">
@@ -46,7 +29,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -63,7 +45,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -80,7 +61,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -97,7 +77,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -114,7 +93,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -131,7 +109,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -144,11 +121,10 @@
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $u->tanggal_lahir }}</p>
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $u->tanggal_lahir->format('D, d M Y') }}</p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -165,7 +141,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -182,7 +157,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -199,7 +173,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -216,7 +189,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -233,7 +205,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -250,7 +221,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -267,7 +237,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -284,7 +253,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                 @endforeach
                             </tbody>

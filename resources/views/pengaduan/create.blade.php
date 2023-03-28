@@ -5,7 +5,7 @@
 @section('content')
     <div class="card z-index-0">
         <div class="card-header text-center pt-4">
-            <h5>Form Pengaduan</h5>
+            <h6>Form Pengaduan</h6>
         </div>
         <div class="row px-xl-5 px-sm-4 px-3">
         </div>
@@ -14,12 +14,12 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="kategor" class="form-control-label">Kategori</label>
+                        <label for="kategori" class="form-control-label">Kategori</label>
                         <select id="kategori" class="form-control @error('kategori_id') is-invalid @enderror"
                             name="kategori_id" required>
                             <option value="">--Pilih Kategori--</option>
                             @foreach ($kategori as $k)
-                                <option value="{{ $k->id }}">{{ $k->kategori }}</option>
+                                <option {{ old('kategori_id') == $k->id ? "selected" : "" }} value="{{ $k->id }}">{{ $k->kategori }}</option>
                             @endforeach
                             <option value="Lainnya">Lainnya</option>
                         </select>
@@ -42,9 +42,14 @@
                     </div>
                     <div class="form-group">
                         <label class="custom-file-label" for="foto">Bukti Foto</label>
-                        <input type="file" name="image[]" class="form-control" id="foto" lang="en" required
+                        <input type="file" name="image[]" class="form-control @error('image') is-invalid @enderror" id="foto" lang="en" required
                             multiple>
                         <label for="foto">*Maksimal foto adalah 5</label>
+                        @error('image')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                     <textarea class="form-control" name="latitude" rows="1" id="latitude" hidden></textarea>
                     <textarea class="form-control" name="longitude" rows="1" id="longitude" hidden></textarea>

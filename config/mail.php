@@ -33,6 +33,7 @@ return [
     |
     */
 
+
     'mailers' => [
         'smtp' => [
             'driver' => env('MAIL_DRIVER', 'sendmail'),
@@ -44,6 +45,13 @@ return [
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'auth_mode' => null,
+            'stream'     => [
+                'ssl' => [
+                    'allow_self_signed' => true,
+                    'verify_peer'       => false,   // <-------------- this is the important part 
+                    'verify_peer_name'  => false,
+                ],
+            ],
         ],
 
         'ses' => [

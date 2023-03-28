@@ -110,7 +110,7 @@
                                                 @csrf
                                                 @method('delete')
 
-                                                @if (auth()->user()->role != 'Warga')
+                                                @if (auth()->user()->role == 'Petugas')
                                                     <button class="text-secondary font-weight-bold text-xs"
                                                         data-toggle="tooltip" data-original-title="Edit user"
                                                         style="border: none; background: none;">
@@ -130,15 +130,20 @@
                                                             Detail
                                                         </a>
                                                     </button>
-                                                    <button class="text-secondary font-weight-bold text-xs"
-                                                        data-toggle="tooltip" data-original-title="Edit user"
-                                                        style="border: none; background: none;">
-                                                        <a data-method="delete" href="pengaduan/edit/{{ $p->id }}"
-                                                            class="text-secondary font-weight-bold text-xs"
-                                                            data-toggle="tooltip" data-original-title="Edit user">
-                                                            Edit
-                                                        </a>
-                                                    </button>
+                                                    @if (auth()->user()->role == 'User')
+                                                        @if ($p->status != 'Selesai')
+                                                            <button class="text-secondary font-weight-bold text-xs"
+                                                                data-toggle="tooltip" data-original-title="Edit user"
+                                                                style="border: none; background: none;">
+                                                                <a data-method="delete"
+                                                                    href="pengaduan/edit/{{ $p->id }}"
+                                                                    class="text-secondary font-weight-bold text-xs"
+                                                                    data-toggle="tooltip" data-original-title="Edit user">
+                                                                    Edit
+                                                                </a>
+                                                            </button>
+                                                        @endif
+                                                    @endif
                                                 @endif
                                                 <button
                                                     class="text-secondary font-weight-bold text-xs btndelete show_confirm"
