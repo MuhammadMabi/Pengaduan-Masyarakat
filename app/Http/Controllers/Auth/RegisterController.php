@@ -55,7 +55,7 @@ class RegisterController extends Controller
             'email' => ['required', 'email', 'unique:users,email', 'max:255'],
             'password' => ['required', 'min:5', 'max:255', 'same:password_confirmation'],
             'password_confirmation' => ['required', 'min:5', 'max:255'],
-            'telp' => ['required', 'max:20', 'unique:users,telp'],
+            'telp' => ['required', 'unique:users,telp', 'max:20', 'unique:users,telp'],
             'jenis_kelamin' => ['required'],
             'role' => ['required'],
             'tanggal_lahir' => ['required'],

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('menu', 'pengaduan')
-@section('title', 'Edit Pengaduan')
+@section('title', 'Edit Laporan')
 
 @section('content')
-    <div class="card z-index-0">
+    <div class="card mx-4">
         <div class="card-header text-center pt-4">
             <h5>Edit Pengaduan</h5>
         </div>
@@ -36,7 +36,7 @@
                     <label for="isi_laporan">Isi Pengaduan</label>
                     <textarea class="form-control" name="isi_laporan" id="isi_laporan" rows="3" required>{{ $pengaduan->isi_laporan }}</textarea>
                     <div class="text-center">
-                        <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-0">Update</button>
+                        <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-0">Update</button>
                     </div>
             </form>
             <form action="{{ route('pengaduan') }}">

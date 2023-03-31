@@ -34,20 +34,20 @@
                         <li class="mb-2">
                             <a class="dropdown-item border-radius-md" href="{{ route('profile') }}">
                                 <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
-                                <span class="d-sm-inline d-none textleft">Profile</span>
+                                <span class="text-sm font-weight-normal mb-1 text-secondary">Profile</span>
                             </a>
                         </li>
                         <li class="mb-2">
                             <a class="dropdown-item border-radius-md" href="{{ route('changepassword') }}">
                                 <i class="ni ni-lock-circle-open fixed-plugin-button-nav cursor-pointer"></i>
-                                <span class="d-sm-inline d-none textleft">Change Password</span>
+                                <span class="text-sm font-weight-normal mb-1 text-secondary">Change Password</span>
                             </a>
                         </li>
                         <li class="mb-2">
                             <a class="dropdown-item border-radius-md" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <i class="ni ni-button-power fixed-plugin-button-nav cursor-pointer"></i>
-                                <span class="d-sm-inline d-none textleft">Logout</span>
+                                <span class="text-sm font-weight-normal mb-1 text-secondary">Logout</span>
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
@@ -55,15 +55,17 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-                    <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
-                        <div class="sidenav-toggler-inner">
-                            <i class="sidenav-toggler-line bg-white"></i>
-                            <i class="sidenav-toggler-line bg-white"></i>
-                            <i class="sidenav-toggler-line bg-white"></i>
-                        </div>
-                    </a>
-                </li>
+                @if (auth()->user()->role != 'Warga')
+                    <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                        <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
+                            <div class="sidenav-toggler-inner">
+                                <i class="sidenav-toggler-line bg-white"></i>
+                                <i class="sidenav-toggler-line bg-white"></i>
+                                <i class="sidenav-toggler-line bg-white"></i>
+                            </div>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

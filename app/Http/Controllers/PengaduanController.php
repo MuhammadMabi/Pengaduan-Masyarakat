@@ -6,6 +6,11 @@ use App\Image;
 use App\Kategori;
 use App\Pengaduan;
 use App\Tanggapan;
+use App\Models\Regency;
+use App\Models\Village;
+use App\Models\District;
+use App\Models\Province;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -33,8 +38,25 @@ class PengaduanController extends Controller
 
     public function create()
     {
+        $auth = auth()->user();
+        $lahir = $auth->tanggal_lahir;
+        $mytime = Carbon::now()->format('Y');
+
+        $umur = Carbon::parse($lahir)->age;
+        $province = Province::all();
+        $regency = Regency::where('province_id', $auth->province_id)->get();
+        $district = District::where('regency_id', $auth->regency_id)->get();
+        $village = Village::where('district_id', $auth->district_id)->get();
+
+        $tanggapan = Tanggapan::where('user_id', auth()->user()->id)->count();
+        $laporan = Pengaduan::where('user_id', auth()->user()->id)->count();
+        $pending = Pengaduan::where('user_id', auth()->user()->id)->where('status', 'Pending')->count();
+        $proses = Pengaduan::where('user_id', auth()->user()->id)->where('status', 'Proses')->count();
+        $selesai = Pengaduan::where('user_id', auth()->user()->id)->where('status', 'Selesai')->count();
+        
         $kategori = Kategori::orderBy('kategori', 'ASC')->get();
-        return view('pengaduan.create', compact('kategori'));
+
+        return view('pengaduan.create', compact('kategori', 'province', 'regency', 'district', 'village', 'tanggapan', 'laporan', 'pending', 'proses', 'selesai', 'umur'));
     }
 
 
@@ -102,8 +124,10 @@ class PengaduanController extends Controller
                     'jam_pengaduan' => $mytime,
                     'isi_laporan' => $request->isi_laporan,
                     'status' => 'Pending',
-                    'latitude' => $request->latitude,
-                    'longitude' => $request->longitude,
+                    'latitude' => '-6.3481326',
+                    'longitude' => '106.7843307',
+                    // 'latitude' => $request->latitude,
+                    // 'longitude' => $request->longitude,
                 ]);
 
                 Alert::success('Berhasil Melaporkan');
@@ -119,43 +143,46 @@ class PengaduanController extends Controller
 
     public function uploadimage(Request $request)
     {
-        // dd($request->image);
         $this->validate($request, [
             'image' => 'required|max:255',
         ]);
-
+    
         $reqfoto = $request->file('image');
         $oldfoto = Image::where('pengaduan_id', $request->pengaduan_id)->count();
         $maxfoto = count($reqfoto) + $oldfoto <= 5;
-
+    
         $allowedfileExtension = ['image/jpg', 'image/jpeg', 'image/png'];
-
+    
         if ($maxfoto) {
-
+    
             if ($request->hasfile('image')) {
+    
                 foreach ($request->image as $file) {
-
                     $imgName = $file->getClientOriginalName() . '-' . time() . '.' . $file->extension();
                     $file->move(public_path('image'), $imgName);
-
-                    // dd($file->getClientMimeType());
+                    $data[] = $imgName;
+    
                     $extension = $file->getClientMimeType();
                     $check = in_array($extension, $allowedfileExtension);
-
-                    if ($check) {
+                }
+    
+                if ($check) {
+    
+                    foreach ($data as $d) {
                         Image::insert([
                             'pengaduan_id' => $request->pengaduan_id,
-                            'image' => $imgName,
+                            'image' => $d,
                         ]);
-                        Alert::success('Berhasil Menambahkan Foto');
-
-                        return back();
-                    } else {
-                        Alert::error('Gambar harus berupa file dengan tipe: png, jpg dan jpeg!');
                     }
+    
+                    Alert::success('Berhasil Menambahkan Foto');
+    
+                    return back();
+                } else {
+                    Alert::error('Gambar harus berupa file dengan tipe: png, jpg dan jpeg!');
                 }
             }
-
+    
             return back();
         } else {
             Alert::error('Foto lebih dari 5');
@@ -250,7 +277,8 @@ class PengaduanController extends Controller
 
         if ($pengaduan->all() != null) {
 
-            $pdf = \PDF::loadView('pengaduan.cetak-pengaduan', compact('pengaduan', 'tanggal_awal', 'tanggal_akhir'));
+            $pdf = FacadePdf::loadView('pengaduan.cetak-pengaduan', compact('pengaduan', 'tanggal_awal', 'tanggal_akhir'));
+            // $pdf = \PDF::loadView('pengaduan.cetak-pengaduan', compact('pengaduan', 'tanggal_awal', 'tanggal_akhir'));
 
             return $pdf->download('document.pdf');
             // return $pdf->stream('document.pdf');

@@ -2,7 +2,7 @@
 @section('title', 'Change Password')
 
 @section('content')
-    <div class="container-fluid py-4">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -58,7 +58,7 @@
                             </div>
                             <div class="form-group row mb-0">
                                 <div class="text-center">
-                                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-0">Change</button>
+                                    <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-0">Change</button>
                         </form>
                         <form action="{{ route('dashboard') }}">
                             <button class="btn bg-gradient-danger w-100 my-4 mb-2">Kembali</button>

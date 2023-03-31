@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('menu', 'pengaduan')
-@section('title', 'Show Pengaduan')
+@section('title', 'Detail Laporan')
 
 @section('style')
     <style>
@@ -26,7 +26,7 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <div class="card mb-4">
+            <div class="card mb-4 mx-4">
                 <div class="card-header text-center pb-0">
                     <h6>
                         @if (auth()->user()->role == 'Warga')
@@ -167,15 +167,16 @@
                                                             name="pengaduan_id" hidden>
                                                         <div class="input-group mt-3">
                                                             <input type="file" name="image[]" id="foto"
-                                                                class="form-control @error('image') is-invalid @enderror" aria-label="Recipient's username"
+                                                                class="form-control @error('image') is-invalid @enderror"
+                                                                aria-label="Recipient's username"
                                                                 aria-describedby="button-addon2" required multiple>
-                                                            <button class="btn bg-gradient-primary mb-0" type="submit"
+                                                            <button class="btn bg-gradient-info mb-0" type="submit"
                                                                 id="button-addon2">Upload</button>
-                                                                @error('image')
-                                                                    <span class="invalid-feedback" role="alert">
-                                                                        <strong>{{ $message }}</strong>
-                                                                    </span>
-                                                                @enderror
+                                                            @error('image')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                            @enderror
                                                         </div>
                                                         <label>*Maksimal foto adalah 5</label>
                                                     </form>
@@ -191,84 +192,87 @@
                 </div>
             </div>
 
-            @if (auth()->user()->role != 'Petugas')
-                <div class="card mb-4">
+            @if (auth()->user()->role == 'Warga')
+                <div class="card mb-4 mx-4">
                     <div class="card-header text-center pb-0">
                         <h6>Tanggapan Petugas</h6>
                     </div>
                     <div class="card-body">
-                        <table class="table align-items-center mb-0">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-3 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <p class="text-xs font-weight-bold mb-0">Petugas</p>
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-3 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <p class="text-xs font-weight-bold mb-0">Petugas</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $tanggapan->user->nama ?? 'Belum ditanggapi' }}
-                                                </p>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <p class="text-xs font-weight-bold mb-0">
+                                                        {{ $tanggapan->user->nama ?? 'Belum ditanggapi' }}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-3 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <p class="text-xs font-weight-bold mb-0">Jam & Tanggal Tanggapan</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-3 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <p class="text-xs font-weight-bold mb-0">Jam & Tanggal Tanggapan</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <p class="text-xs font-weight-bold mb-0">
-                                                    @if ($pengaduan->tanggapan)
-                                                        {{ $tanggapan->tanggal_tanggapan->format('H:i:s | D, d M Y') }}
-                                                    @else
-                                                        Belum ditanggapi
-                                                    @endif
-                                                </p>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <p class="text-xs font-weight-bold mb-0">
+                                                        @if ($pengaduan->tanggapan)
+                                                            {{ $tanggapan->tanggal_tanggapan->format('H:i:s | D, d M Y') }}
+                                                        @else
+                                                            Belum ditanggapi
+                                                        @endif
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-3 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <p class="text-xs font-weight-bold mb-0">Tanggapan</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-3 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <p class="text-xs font-weight-bold mb-0">Tanggapan</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $pengaduan->tanggapan->tanggapan ?? 'Belum Ditanggapi' }}
-                                                </p>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <p class="text-xs font-weight-bold mb-0">
+                                                        {{ $pengaduan->tanggapan->tanggapan ?? 'Belum Ditanggapi' }}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        @if (auth()->user()->role != 'Petugas')
-                            <form action="{{ route('pengaduan') }}">
-                                <a href="/pengaduan/cetak/{{ $pengaduan->id }}" target="_blank" class="btn bg-gradient-success w-100 my-4 mb-0">Cetak PDF</a>
-                                <button type="submit" class="btn bg-gradient-danger w-100 my-4 mb-2">Kembali</button>
-                            </form>
-                        @endif
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            @if (auth()->user()->role == 'Warga')
+                                <form action="{{ route('pengaduan') }}">
+                                    <a href="/pengaduan/cetak/{{ $pengaduan->id }}" target="_blank"
+                                        class="btn bg-gradient-success w-100 my-4 mb-0">Cetak PDF</a>
+                                    <button type="submit" class="btn bg-gradient-danger w-100 my-4 mb-2">Kembali</button>
+                                </form>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            @elseif (auth()->user()->role == 'Petugas')
-                <div class="card mb-4">
+            @elseif (auth()->user()->role != 'Warga')
+                <div class="card mb-4 mx-4">
                     <div class="card-header text-center pb-0">
                         <h6>Tanggapan Petugas</h6>
                     </div>
@@ -332,11 +336,12 @@
                                 @endif
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-0">Tanggapi</button>
+                                <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-0">Tanggapi</button>
                             </div>
                         </form>
                         <form action="{{ route('pengaduan') }}">
-                            <a href="/pengaduan/cetak/{{ $pengaduan->id }}" target="_blank" class="btn bg-gradient-success w-100 my-4 mb-0">Cetak PDF</a>
+                            <a href="/pengaduan/cetak/{{ $pengaduan->id }}" target="_blank"
+                                class="btn bg-gradient-success w-100 my-4 mb-0">Cetak PDF</a>
                             <button type="submit" class="btn bg-gradient-danger w-100 my-4 mb-2">Kembali</button>
                         </form>
                     </div>

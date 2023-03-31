@@ -15,7 +15,7 @@
     @endif
     <div class="row">
         <div class="col-12">
-            <div class="card mb-4">
+            <div class="card mb-4 mx-4">
                 <div class="card-header text-center pb-0">
                     <h6>Data User</h6>
                 </div>

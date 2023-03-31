@@ -14,7 +14,7 @@
     @endif
     <div class="row">
         <div class="col-12">
-            <div class="card mb-4">
+            <div class="card mb-4 mx-4">
                 <div class="card-header text-center pb-0">
                     <h6>Cetak Laporan</h6>
                 </div>
@@ -40,7 +40,7 @@
                         </div>
                         <a type="submit"
                             onclick="this.href='cetakpdf/'+ document.getElementById('tanggal_awal').value + '/' + document.getElementById('tanggal_akhir').value"
-                            class="btn bg-gradient-primary w-100 my-4 mb-2">Cetak Laporan</a>
+                            class="btn bg-gradient-info w-100 my-4 mb-2">Cetak Laporan</a>
                     </div>
                 </div>
             </div>

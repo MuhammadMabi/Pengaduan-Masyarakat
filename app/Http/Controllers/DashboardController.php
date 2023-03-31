@@ -14,6 +14,7 @@ class DashboardController extends Controller
     
     public function index()
     {
+
         $foto = Image::count();
         $pengaduan = Pengaduan::count();
         $maps = Pengaduan::all();

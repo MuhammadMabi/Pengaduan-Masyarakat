@@ -20,10 +20,6 @@ Route::get('/', function () {
     return view('landingpage');
 })->middleware('guest')->name('landingpage');
 
-Route::get('/tes', function () {
-    return view('email-tanggapan');
-});
-
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');

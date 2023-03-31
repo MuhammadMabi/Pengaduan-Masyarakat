@@ -37,11 +37,12 @@ class TanggapanController extends Controller
                 'status' => $request->status
             ]);
 
+            $request['user_id'] .= Auth::user()->id;
 
             $tanggapan->update($request->all());
             
             Mail::to($pengaduan->user->email)->send(new TanggapanEmail());
-            return redirect()->back();
+            return redirect('pengaduan');
         }else {
 
             Alert::success('Success', 'Berhasil Menaggapi');
@@ -55,7 +56,7 @@ class TanggapanController extends Controller
             Tanggapan::create($request->all());
 
             Mail::to($pengaduan->user->email)->send(new TanggapanEmail());
-            return redirect()->back();
+            return redirect('pengaduan');
         }
 
     }

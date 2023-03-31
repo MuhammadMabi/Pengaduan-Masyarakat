@@ -5,11 +5,11 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card mx-4">
                 <div class="card-header text-center pb-0">
                     <h6>Detail User</h6>
                 </div>
-                <div class="card-body px-0 pt-0 pb-2">
+                <div class="card-body">
                     <div class="table-responsive p-0">
                         <table class="table align-items-center mb-0">
                             <tbody>
@@ -257,13 +257,14 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
+                        
             <div class="align-middle">
                 <form action="{{ route('user') }}">
-                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Kembali</button>
+                    <button type="submit" class="btn bg-gradient-danger w-100 my-4 mb-2">Kembali</button>
                 </form>
+            </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -33,7 +33,7 @@
     @endif
     <div class="row">
         <div class="col-12">
-            <div class="card mb-4">
+            <div class="card mb-4 mx-4">
                 <div class="card-header text-center pb-0">
                     <h6 class="float-inline">
                         @if (auth()->user()->role == 'Warga')
@@ -56,7 +56,13 @@
                                         Kategori</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Tanggal Pengaduan</th>
+                                        Tanggal
+                                        @if (auth()->user()->role == 'Warga')
+                                            Laporan
+                                        @else
+                                            Pengaduan
+                                        @endif
+                                    </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Status</th>
@@ -110,7 +116,7 @@
                                                 @csrf
                                                 @method('delete')
 
-                                                @if (auth()->user()->role == 'Petugas')
+                                                @if (auth()->user()->role != 'Warga')
                                                     <button class="text-secondary font-weight-bold text-xs"
                                                         data-toggle="tooltip" data-original-title="Edit user"
                                                         style="border: none; background: none;">
@@ -130,7 +136,7 @@
                                                             Detail
                                                         </a>
                                                     </button>
-                                                    @if (auth()->user()->role == 'User')
+                                                    @if (auth()->user()->role == 'Warga')
                                                         @if ($p->status != 'Selesai')
                                                             <button class="text-secondary font-weight-bold text-xs"
                                                                 data-toggle="tooltip" data-original-title="Edit user"

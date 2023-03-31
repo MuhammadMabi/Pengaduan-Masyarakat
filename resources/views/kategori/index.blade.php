@@ -33,10 +33,10 @@
     @endif
     <div class="row">
         <div class="col-12">
-            <div class="card mb-4">
+            <div class="card mb-4 mx-4">
                 <div class="card-header text-center pb-0">
                     <h6 class="float-inline">Kategori</h6>
-                        <button id="btntambah" type="button" class="btn bg-gradient-primary float-inline btn-sm btnmdl"
+                        <button id="btntambah" type="button" class="btn bg-gradient-info float-inline btn-sm btnmdl"
                             data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Tambah
                         </button>
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn bg-gradient-primary">Simpan</button>
+                        <button type="submit" class="btn bg-gradient-info">Simpan</button>
                         <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Tutup</button>
                     </div>
                 </form>

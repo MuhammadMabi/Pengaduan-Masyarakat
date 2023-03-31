@@ -3,7 +3,7 @@
 @section('title', 'Edit Kategori')
 
 @section('content')
-    <div class="card z-index-0">
+    <div class="card mx-4">
         <div class="card-header text-center pt-4">
             <h6>Edit Kategori</h6>
         </div>
@@ -25,9 +25,9 @@
                         </span>
                     @enderror
                 </div>
-                <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-0">Update</button>
+                <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-0">Update</button>
             </form>
-            <form action="{{ route('pengaduan') }}">
+            <form action="{{ route('kategori') }}">
                 <button type="submit" class="btn bg-gradient-danger w-100 my-4 mb-2">Kembali</button>
             </form>
         </div>
